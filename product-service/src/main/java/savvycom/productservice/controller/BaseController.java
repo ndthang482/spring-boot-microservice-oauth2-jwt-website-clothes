@@ -1,14 +1,14 @@
 package savvycom.productservice.controller;
 
 import savvycom.productservice.domain.message.BaseMessage;
-import savvycom.productservice.domain.message.ExtendedMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import savvycom.productservice.domain.message.ResponseMessage;
 
 public class BaseController {
 
     public <T> ResponseEntity<?> successResponse(String message, String description, T data) {
-        ExtendedMessage<T> responseMessage =  new ExtendedMessage<>(
+        ResponseMessage<T> responseMessage =  new ResponseMessage<>(
                 HttpStatus.OK.value() + "",
                 true,
                 message,

@@ -1,4 +1,4 @@
-package savvycom.productservice.utils;
+package savvycom.productservice.config;
 
 import savvycom.productservice.config.StringEncryptorConfig;
 
