@@ -150,7 +150,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductResponse findAllByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize
+    public ProductResponse findByProductLineId(List<Long> productLineIds, int pageNo, int pageSize
             , String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();

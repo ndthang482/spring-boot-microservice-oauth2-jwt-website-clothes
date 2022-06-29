@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import savvycom.productservice.common.Const;
 import savvycom.productservice.domain.entity.Branch;
@@ -42,6 +43,7 @@ public class BranchController extends BaseController{
     //pos: create newbranch
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create branch by admin")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create branch completed",
             content = {@Content(mediaType = "application/json",
@@ -74,6 +76,7 @@ public class BranchController extends BaseController{
 
     //put: update branch
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update branch by admin")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update branch completed",
             content = {@Content(mediaType = "application/json",

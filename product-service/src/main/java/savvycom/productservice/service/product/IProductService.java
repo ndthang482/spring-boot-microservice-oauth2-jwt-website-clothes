@@ -22,7 +22,7 @@ public interface IProductService {
 
     ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findAllByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir);
+    ProductResponse findByProductLineId(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir);
 
     ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
            ,Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);

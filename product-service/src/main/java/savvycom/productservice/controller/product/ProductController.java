@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -47,7 +48,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "create new product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "create completed",
             content = {@Content(mediaType = "application/json",
@@ -63,7 +64,7 @@ public class ProductController extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Delete product by admin")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "delete completed",
             content = {@Content(mediaType = "application/json",
@@ -78,7 +79,7 @@ public class ProductController extends BaseController {
         productService.delete(id);
     }
     @PutMapping("{id}")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "update completed",
             content = {@Content(mediaType = "application/json",
@@ -164,7 +165,7 @@ public class ProductController extends BaseController {
         name = "%" + name + "%";
         List<ProductLine> productLines = productLineService.findByNameLike(name);
         List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
-        ProductResponse productResponse = productService.findAllByProductLineIds(productLineIds, pageNo, pageSize, sortBy, sortDir);
+        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
 
@@ -190,7 +191,6 @@ public class ProductController extends BaseController {
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
         {
-
         ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }

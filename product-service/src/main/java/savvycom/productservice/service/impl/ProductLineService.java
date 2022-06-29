@@ -45,7 +45,7 @@ public class ProductLineService implements IProductLineService {
 //    }
 
     @Override
-    public List<ProductLine> findAllCategoryByLine(Long categoryId) {
+    public List<ProductLine> findCategoryByLine(Long categoryId) {
         return productLineRepository.findAll().stream()
                 .filter(productLine -> productLine.getCategoryId() == categoryId)
                 .collect(Collectors.toList());

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -28,8 +29,6 @@ public class ProductLineController extends BaseController {
         this.productLineService=ProductLineService;
     }
 
-    // find all productline
-
     @GetMapping("")
     @Operation(summary = "Find all product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all product_Line completed",
@@ -45,9 +44,8 @@ public class ProductLineController extends BaseController {
         return successResponse(productLineService.findAll());
     }
 
-    //pos: create newline by admin
-
     @PostMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -61,9 +59,6 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> newProductLine(@RequestBody ProductLine productLine){
         return successResponse(productLineService.save(productLine));
     }
-
-    //find id by line
-
     @GetMapping("/{id}")
     @Operation(summary = "Find product_Line by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find product_Line by id completed",
@@ -80,6 +75,7 @@ public class ProductLineController extends BaseController {
     }
     //put: update line
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -114,7 +110,7 @@ public class ProductLineController extends BaseController {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     public ResponseEntity<?> findAllCategoryByLine(@PathVariable("id") Long id){
-        return successResponse(productLineService.findAllCategoryByLine(id));
+        return successResponse(productLineService.findCategoryByLine(id));
     }
 
 }
