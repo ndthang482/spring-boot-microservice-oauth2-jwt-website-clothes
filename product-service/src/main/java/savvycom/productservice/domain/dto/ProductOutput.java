@@ -1,12 +1,13 @@
 package savvycom.productservice.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import savvycom.productservice.domain.entity.Image;
+import io.swagger.v3.oas.annotations.media.Schema;
+import savvycom.productservice.domain.entity.product.ProductLine;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class ProductOutput {
     private String size;
     @NotNull(message = "ProductLineId must not be null")
     @Schema(description = "ProductLineId of the product")
-    private Long productLineId;
+    private ProductLine productLine;
     @NotNull(message = "Price must not be null")
     @Schema(description = "Price of the product")
     private Long price;

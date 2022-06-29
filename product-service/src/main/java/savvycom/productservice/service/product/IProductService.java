@@ -9,8 +9,6 @@ import savvycom.productservice.domain.dto.ProductOutput;
 import java.util.List;
 
 public interface IProductService {
-    Product createProduct(ProductOutput productOutput);
-
     Product save(Product product);
 
     void delete(Long id);
@@ -22,13 +20,12 @@ public interface IProductService {
 
     ProductOutput findProductOutputById(Long id);
 
+    ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findAllResponse(int pageNo, int pageSize, String sortBy, String sortDir);
+    ProductResponse findAllByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findAllByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir );
-
-    ProductResponse findByColorAndSizeAndPriceBetween(String color, String size, Long priceFrom, Long priceTo
-            , int pageNo, int pageSize, String sortBy, String sortDir );
+    ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
+           ,Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
 
 }
 

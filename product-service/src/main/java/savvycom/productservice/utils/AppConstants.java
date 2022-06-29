@@ -12,5 +12,6 @@ public class AppConstants {
     public  static final String DEFAULT_COLOR = "white";
     public static final String DEFAULT_PRICE_FROM = "0" ;
     public static final String DEFAULT_PRICE_TO = "5000000";
+    public static final String DEFAULT_DISCOUNTID = "1";
 
 }

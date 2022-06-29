@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -45,8 +46,8 @@ public class ProductController extends BaseController {
         this.productService = ProductService;
     }
 
-    @PostMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+    @PostMapping("")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "create new product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "create completed",
             content = {@Content(mediaType = "application/json",
@@ -62,7 +63,7 @@ public class ProductController extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Delete product by admin")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "delete completed",
             content = {@Content(mediaType = "application/json",
@@ -77,7 +78,7 @@ public class ProductController extends BaseController {
         productService.delete(id);
     }
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "update completed",
             content = {@Content(mediaType = "application/json",
@@ -139,7 +140,7 @@ public class ProductController extends BaseController {
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        return successResponse(productService.findAllResponse(pageNo, pageSize, sortBy, sortDir));
+        return successResponse(productService.findAllProductResponse(pageNo, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/search")
@@ -153,13 +154,15 @@ public class ProductController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByNameLike(@RequestParam String q,
-                                            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-                                            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-                                            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-                                            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        q = "%" + q + "%";
-        List<ProductLine> productLines = productLineService.findByNameLike(q);
+    public ResponseEntity<?> findByNameLike(
+            @RequestParam String name,
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
+    {
+        name = "%" + name + "%";
+        List<ProductLine> productLines = productLineService.findByNameLike(name);
         List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
         ProductResponse productResponse = productService.findAllByProductLineIds(productLineIds, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
@@ -176,18 +179,19 @@ public class ProductController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByColorAndSizeAndPriceBetween(
+    public ResponseEntity<?> findByColorAndSizeAndPriceBetweenAndDiscountId(
             @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_SIZE, required = false) String size,
             @RequestParam(value = "color", defaultValue = AppConstants.DEFAULT_COLOR, required = false) String color,
             @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
             @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_TO, required = false) Long priceTo,
+            @RequestParam(value = "discountId", defaultValue = AppConstants.DEFAULT_DISCOUNTID, required = false) Long discountId,
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
         {
 
-        ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetween(color, size, priceFrom, priceTo, pageNo, pageSize, sortBy, sortDir);
+        ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
 

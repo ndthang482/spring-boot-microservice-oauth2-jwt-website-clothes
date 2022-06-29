@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.ProductResponse;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.dto.ProductOutput;
+import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductRepository;
 import savvycom.productservice.service.IImageService;
 import savvycom.productservice.service.product.IProductLineService;
@@ -35,25 +36,10 @@ public class ProductService implements IProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    //Override: ghi đè phương thức(nếu lớp con có phương thức giống lớp cha)
-
-    @Override
-    public Product createProduct(ProductOutput productOutput) {
-        Product product = new Product();
-        product.setColor(productOutput.getColor());
-        product.setSize(productOutput.getSize());
-        product.setProductLineId(productOutput.getProductLineId());
-        product.setPrice(productOutput.getPrice());
-        product.setActive(productOutput.getActive());
-        return productRepository.save(product);
-    }
-
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
     }
-
     //delete set(active)
     @Override
     public void delete(Long id) {
@@ -63,10 +49,7 @@ public class ProductService implements IProductService {
             save(product);
         }
     }
-
     //find id by product
-    //Override: ghi đè phương thức (khi interface business service bắt buộc phải ovverride trong class)
-
     @Override
     public Product findById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -75,11 +58,12 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductOutput> findProductByProductLine(Long productLineId) {
         return productRepository.findAll().stream()
+                .filter(product -> product.getProductLineId() == productLineId)
                 .map(product -> ProductOutput.builder()
                         .id(product.getId())
                         .color(product.getColor())
                         .size(product.getSize())
-                        .productLineId(product.getProductLineId())
+                        .productLine(productLineService.findById(product.getProductLineId()))
                         .price(product.getPrice())
                         .discountId(product.getDiscountId())
                         .active(product.getActive())
@@ -87,7 +71,6 @@ public class ProductService implements IProductService {
                         .createdAt(product.getCreatedAt())
                         .modifiedAt(product.getModifiedAt())
                         .build())
-                .filter(product -> product.getProductLineId() == productLineId)
                 .collect(Collectors.toList());
     }
 
@@ -101,7 +84,7 @@ public class ProductService implements IProductService {
                 .id(product.getId())
                 .color(product.getColor())
                 .size(product.getSize())
-                .productLineId(product.getProductLineId())
+                .productLine(productLineService.findById(product.getProductLineId()))
                 .price(product.getPrice())
                 .discountId(product.getDiscountId())
                 .active(product.getActive())
@@ -115,7 +98,7 @@ public class ProductService implements IProductService {
     private ProductOutput mapToDTO(Product product){
         ProductOutput productOutput = new ProductOutput();
         productOutput.setId(product.getId());
-        productOutput.setProductLineId(product.getProductLineId());
+        productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
         productOutput.setImages(imageService.findByProductId(product.getId()));
@@ -131,7 +114,7 @@ public class ProductService implements IProductService {
         Product product = new Product();
         product.setColor(productOutput.getColor());
         product.setSize(productOutput.getSize());
-        product.setProductLineId(productOutput.getProductLineId());
+        product.setProductLineId(productOutput.getProductLine().getId());
         product.setPrice(productOutput.getPrice());
         product.setDiscountId(productOutput.getDiscountId());
         product.setActive(productOutput.getActive());
@@ -141,7 +124,7 @@ public class ProductService implements IProductService {
     }
     //map productOutputById find all productOutput (ProductImage)
     @Override
-    public ProductResponse findAllResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
@@ -174,8 +157,7 @@ public class ProductService implements IProductService {
 
         // create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> products = productRepository.findByProductLineIdIn(productLineIds,
-                PageRequest.of(pageNo, pageSize, sort));
+        Page<Product> products = productRepository.findByProductLineIdIn(productLineIds, pageable);
         List<ProductOutput> content = products.getContent().stream()
                 .map(product -> mapToDTO(product)).collect(Collectors.toList());
         ProductResponse productResponse = new ProductResponse();
@@ -190,14 +172,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductResponse findByColorAndSizeAndPriceBetween(String color, String size, Long priceFrom
-            , Long priceTo,int pageNo, int pageSize
+    public ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom
+            , Long priceTo,Long discountId,int pageNo, int pageSize
             , String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         // create Pageable instance
-        Page<Product> products = productRepository.findByColorAndSizeAndPriceBetween(color, size, priceFrom, priceTo,
+        Page<Product> products = productRepository.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId,
                 PageRequest.of(pageNo, pageSize, sort));
         List<ProductOutput> content = products.getContent().stream()
                 .map(product -> mapToDTO(product)).collect(Collectors.toList());
@@ -212,7 +194,5 @@ public class ProductService implements IProductService {
 
         return productResponse;
     }
-
-
 
 }

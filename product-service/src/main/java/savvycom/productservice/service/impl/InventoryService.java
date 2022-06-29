@@ -36,14 +36,14 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public List<Inventory> fineAllBranchByInventory(Long branchId) {
+    public List<Inventory> fineBranchByInventory(Long branchId) {
         return inventoryRepository.findAll().stream()
                 .filter(inventory -> inventory.getBranchId() == branchId)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Inventory> findAllProductByInventory(Long productId) {
+    public List<Inventory> findProductByInventory(Long productId) {
         return inventoryRepository.findAll().stream()
                 .filter(inventory -> inventory.getProductId() == productId)
                 .collect(Collectors.toList());
