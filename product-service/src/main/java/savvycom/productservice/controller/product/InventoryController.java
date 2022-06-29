@@ -75,7 +75,6 @@ public class InventoryController extends BaseController {
         return successResponse(inventoryService.findById(id));
     }
     @PostMapping("/quantity")
-    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Find quantity while cart")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Changed quantity while cart completed",
             content = {@Content(mediaType = "application/json",
