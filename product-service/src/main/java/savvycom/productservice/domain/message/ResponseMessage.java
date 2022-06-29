@@ -13,6 +13,10 @@ public class ResponseMessage<T> extends BaseMessage implements Serializable {
     @Schema(description = "Data response")
     private T data;
 
+    public ResponseMessage(String code, boolean success, String message, String description, T data) {
+        super(code, success, message, description);
+        this.data = data;
+    }
 }
 
 
