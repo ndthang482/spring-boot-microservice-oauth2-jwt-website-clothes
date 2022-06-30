@@ -17,6 +17,8 @@ import savvycom.productservice.domain.message.ResponseMessage;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/line")
@@ -101,7 +103,7 @@ public class ProductLineController extends BaseController {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     public ResponseEntity<?> findAllCategoryByLine(@PathVariable("id") Long id){
-        return successResponse(productLineService.findCategoryByLine(id));
+        return successResponse(productLineService.findByCategoryId(id));
     }
 
 }

@@ -13,9 +13,7 @@ public interface IProductLineService {
 
     ProductLine findById(Long id);
 
-//    List<ProductLine> findAllDiscountByLine(Long discountId);
-
-    List<ProductLine> findCategoryByLine(Long categoryId);
+    List<ProductLine> findByCategoryId(Long categoryId);
 
     List<ProductLine> findByNameLike(String name);
 

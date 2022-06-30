@@ -13,5 +13,8 @@ public class AppConstants {
     public static final String DEFAULT_PRICE_FROM = "0" ;
     public static final String DEFAULT_PRICE_TO = "5000000";
     public static final String DEFAULT_DISCOUNT_ID = "1";
+    public static final String DEFAULT_SKIRT_ID_1 = "1";
+    public static final String DEFAULT_SKIRT_ID_2 = "2";
+
 
 }

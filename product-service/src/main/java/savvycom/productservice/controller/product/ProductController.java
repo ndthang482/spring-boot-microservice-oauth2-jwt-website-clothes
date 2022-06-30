@@ -191,5 +191,39 @@ public class ProductController extends BaseController {
         ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<?> findCategoryIdByProductLine(
+            @PathVariable() String categoryName,
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
+    {
+        List<ProductLine> productLines = null;
+        if (categoryName.equalsIgnoreCase("skirt")) {
+            productLines = productLineService.findByCategoryId(1l);
+        } else if (categoryName.equalsIgnoreCase("accessory")) {
+            productLines = productLineService.findByCategoryId(2l);
+        }
+        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
+        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
+        return successResponse(productResponse);
+    }
+
+//    find accessory by line
+
+//    @GetMapping("/accessory")
+//    public ResponseEntity<?> findCategoryByProductLine(
+//            @RequestParam(value = "q", defaultValue = AppConstants.DEFAULT_SKIRT_ID_2, required = false) Long q,
+//            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+//            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+//            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+//            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
+//    {
+//        List<ProductLine> productLines = productLineService.findByCategoryId(q);
+//        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
+//        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
+//        return successResponse(productResponse);
+//    }
 
 }

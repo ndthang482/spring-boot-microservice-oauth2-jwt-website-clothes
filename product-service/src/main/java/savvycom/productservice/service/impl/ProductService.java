@@ -11,11 +11,13 @@ import savvycom.productservice.domain.dto.ProductResponse;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.entity.product.ProductLine;
+import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.repository.product.ProductRepository;
 import savvycom.productservice.service.IImageService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 //class ProductService implements to interface IProductService
@@ -27,6 +29,8 @@ public class ProductService implements IProductService {
     private ProductRepository productRepository;
     @Autowired
     private IImageService imageService;
+    @Autowired
+    ProductLineRepository productLineRepository;
     @Autowired
     private IProductLineService productLineService;
     public ProductService(ProductRepository productRepository) {
@@ -100,18 +104,6 @@ public class ProductService implements IProductService {
         return productOutput;
     }
 
-    private Product mapToEntity(ProductOutput productOutput){
-        Product product = new Product();
-        product.setColor(productOutput.getColor());
-        product.setSize(productOutput.getSize());
-        product.setProductLineId(productOutput.getProductLine().getId());
-        product.setPrice(productOutput.getPrice());
-        product.setDiscountId(productOutput.getDiscountId());
-        product.setActive(productOutput.getActive());
-        product.setCreatedAt(productOutput.getCreatedAt());
-        product.setModifiedAt(productOutput.getModifiedAt());
-        return product;
-    }
     //use Pageable find all product
     @Override
     public ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
@@ -184,5 +176,6 @@ public class ProductService implements IProductService {
 
         return productResponse;
     }
+
 
 }

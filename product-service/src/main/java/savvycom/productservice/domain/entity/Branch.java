@@ -21,7 +21,7 @@ public class Branch {
 
     private String name;
 
-    private Long addressId;
+    private String address;
 
     private Date createdAt;
 

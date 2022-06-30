@@ -14,8 +14,6 @@ public interface IProductService {
     void delete(Long id);
     Product findById(Long id);
 
-//    List<ProductDTO> findProductDTOById(Long id);
-
    List<ProductOutput> findProductByProductLine(Long productLineId);
 
     ProductOutput findProductOutputById(Long id);
@@ -26,7 +24,6 @@ public interface IProductService {
 
     ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
            ,Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
-
 }
 
 

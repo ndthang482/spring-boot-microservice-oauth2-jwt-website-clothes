@@ -7,7 +7,6 @@ import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.service.product.IProductLineService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductLineService implements IProductLineService {
@@ -37,11 +36,10 @@ public class ProductLineService implements IProductLineService {
     }
 
     @Override
-    public List<ProductLine> findCategoryByLine(Long categoryId) {
-        return productLineRepository.findAll().stream()
-                .filter(productLine -> productLine.getCategoryId() == categoryId)
-                .collect(Collectors.toList());
+    public List<ProductLine> findByCategoryId(Long categoryId) {
+        return productLineRepository.findByCategoryId(categoryId);
     }
+
 
     @Override
     public List<ProductLine> findByNameLike(String name) {
