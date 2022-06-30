@@ -11,23 +11,23 @@ server:
     hibernate:
       ddl-Auto: update
 
-#security:
-#  oauth2:
-#    client:
-#      clientId: user-service
-#      clientSecret: user-service
-#      accessTokenUri: http://${discov-ery.hostname}:8762/oauth/token
-#      grant-type: client_credentials
-#      scope: server
-#    resource:
-#      userInfoUri: http://${discovery.hostname}:8762/auth/user
-#
-#discovery:
-#   hostname: 192.168.196.207
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://${discovery.hostname}:8761/eureka/
+security:
+  oauth2:
+    client:
+      clientId: user-service
+      clientSecret: user-service
+      accessTokenUri: http://${discovery.hostname}:8762/oauth/token
+      grant-type: client_credentials
+      scope: server
+    resource:
+      userInfoUri: http://${discovery.hostname}:8762/auth/user
+
+discovery:
+   hostname: 192.168.196.207
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${discovery.hostname}:8761/eureka/
 
 spring-doc:
   swagger-ui:

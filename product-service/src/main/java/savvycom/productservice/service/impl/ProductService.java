@@ -7,13 +7,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import savvycom.productservice.domain.dto.ProductDTO;
 import savvycom.productservice.domain.dto.ProductResponse;
+import savvycom.productservice.domain.dto.ProductReviewResponse;
+import savvycom.productservice.domain.entity.Review;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.repository.product.ProductRepository;
 import savvycom.productservice.service.IImageService;
+import savvycom.productservice.service.IReviewService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 
@@ -30,6 +34,8 @@ public class ProductService implements IProductService {
     @Autowired
     private IImageService imageService;
     @Autowired
+    private IReviewService reviewService;
+    @Autowired
     ProductLineRepository productLineRepository;
     @Autowired
     private IProductLineService productLineService;
@@ -41,16 +47,12 @@ public class ProductService implements IProductService {
         return productRepository.save(product);
     }
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         Product product= productRepository.findById(id).orElse(null);
         if(product != null){
             product.setActive(0L);
             save(product);
         }
-    }
-    @Override
-    public Product findById(Long id) {
-        return productRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -104,6 +106,24 @@ public class ProductService implements IProductService {
         return productOutput;
     }
 
+    private ProductDTO mapDTO(Product product){
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setProductLine(productLineService.findById(product.getProductLineId()));
+        productDTO.setColor(product.getColor());
+        productDTO.setSize(product.getSize());
+        productDTO.setImages(imageService.findByProductId(product.getId()));
+        productDTO.setPrice(product.getPrice());
+        productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
+        productDTO.setActive(product.getActive());
+        productDTO.setDiscountId(product.getDiscountId());
+        productDTO.setCreatedAt(product.getCreatedAt());
+        productDTO.setModifiedAt(product.getModifiedAt());
+        return productDTO;
+    }
+
+
+
     //use Pageable find all product
     @Override
     public ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
@@ -154,14 +174,13 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom
-            , Long priceTo,Long discountId,int pageNo, int pageSize
-            , String sortBy, String sortDir) {
+            , Long priceTo,Long discountId,int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         // create Pageable instance
-        Page<Product> products = productRepository.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId,
-                PageRequest.of(pageNo, pageSize, sort));
+        Page<Product> products = productRepository.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size
+                , priceFrom, priceTo, discountId, PageRequest.of(pageNo, pageSize, sort));
         List<ProductOutput> content = products.getContent().stream()
                 .map(product -> mapToDTO(product)).collect(Collectors.toList());
 
@@ -176,5 +195,26 @@ public class ProductService implements IProductService {
         return productResponse;
     }
 
+    // find review
+    @Override
+    public ProductReviewResponse findProductDTOByReview(List<Long> id
+            , int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // create Pageable instance
+        Page<Product> products = productRepository.findByIdIn(id,
+                PageRequest.of(pageNo, pageSize, sort));
+        List<ProductDTO> content = products.getContent().stream()
+                .map(product -> mapDTO(product)).collect(Collectors.toList());
+        ProductReviewResponse productReviewResponse = new ProductReviewResponse();
+        productReviewResponse.setContent(content);
+        productReviewResponse.setPageNo(products.getNumber());
+        productReviewResponse.setPageSize(products.getSize());
+        productReviewResponse.setTotalElements(products.getTotalElements());
+        productReviewResponse.setTotalPages(products.getTotalPages());
+        productReviewResponse.setLast(products.isLast());
+        return productReviewResponse;
+    }
 
 }
