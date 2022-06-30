@@ -1,4 +1,4 @@
-package savvycom.productservice.controller.exception;
+package savvycom.productservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

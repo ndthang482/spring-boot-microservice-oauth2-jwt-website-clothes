@@ -23,8 +23,6 @@ public class InventoryService implements IInventoryService {
         return inventoryRepository.save(inventory);
     }
 
-
-
     @Override
     public List<Inventory> findAll() {
         return inventoryRepository.findAll();

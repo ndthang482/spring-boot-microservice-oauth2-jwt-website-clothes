@@ -29,8 +29,6 @@ public class ReviewController extends BaseController{
         this.reviewService = ReviewService;
     }
 
-    //find all review
-
     @GetMapping("")
     @Operation(summary = "Find review all")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find review all completed",
@@ -45,8 +43,6 @@ public class ReviewController extends BaseController{
     public ResponseEntity<?> findAll() {
         return successResponse(reviewService.findAll());
     }
-
-    //pos: create review
 
     @PostMapping("")
     @Operation(summary = "Create new review")
@@ -63,8 +59,6 @@ public class ReviewController extends BaseController{
         return successResponse(reviewService.save(review));
     }
 
-    //find id by review
-
     @GetMapping("/{id}")
     @Operation(summary = "Find review by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find review by id completed",
@@ -80,7 +74,6 @@ public class ReviewController extends BaseController{
         return successResponse(reviewService.findById(id));
     }
 
-    //put: update review
     @PutMapping("{id}")
     @Operation(summary = "Update review by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update review by id completed",
@@ -97,8 +90,6 @@ public class ReviewController extends BaseController{
         return successResponse(reviewService.save(review));
     }
 
-    //find all product by review
-
     @GetMapping("/product/{id}")
     @Operation(summary = "Find review by productId")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find review by productId completed",
@@ -114,7 +105,6 @@ public class ReviewController extends BaseController{
         return successResponse(reviewService.findReviewByProductId(id));
     }
 
-    //find all user by review
     @GetMapping("/user/{id}")
     @Operation(summary = "Find review by userId")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find review by userId completed",

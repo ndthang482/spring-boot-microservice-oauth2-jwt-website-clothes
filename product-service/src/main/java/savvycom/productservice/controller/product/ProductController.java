@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -48,7 +45,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "create new product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "create completed",
             content = {@Content(mediaType = "application/json",
@@ -64,7 +61,7 @@ public class ProductController extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Delete product by admin")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "delete completed",
             content = {@Content(mediaType = "application/json",
@@ -79,7 +76,7 @@ public class ProductController extends BaseController {
         productService.delete(id);
     }
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "update completed",
             content = {@Content(mediaType = "application/json",

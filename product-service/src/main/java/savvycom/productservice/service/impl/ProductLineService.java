@@ -16,7 +16,6 @@ public class ProductLineService implements IProductLineService {
     public ProductLineService(ProductLineRepository productLineRepository) {
         this.productLineRepository = productLineRepository;
     }
-
     @Override
     public ProductLine save(ProductLine productLine) {
         return productLineRepository.save(productLine);
@@ -36,13 +35,6 @@ public class ProductLineService implements IProductLineService {
     public ProductLine findById(Long id) {
         return productLineRepository.findById(id).orElse(null);
     }
-
-//    @Override
-//    public List<ProductLine> findAllDiscountByLine(Long discountId) {
-//        return productLineRepository.findAll().stream()
-//                .filter(productLine -> productLine.getDiscountId() == discountId)
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public List<ProductLine> findCategoryByLine(Long categoryId) {

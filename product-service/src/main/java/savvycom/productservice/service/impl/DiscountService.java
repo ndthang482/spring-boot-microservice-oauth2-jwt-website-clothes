@@ -29,7 +29,7 @@ public class DiscountService implements IDiscountService {
 
     @Override
     public List<Discount> findAll() {
-        return (List<Discount>) discountRepository.findAll();
+        return discountRepository.findAll();
     }
 
     @Override

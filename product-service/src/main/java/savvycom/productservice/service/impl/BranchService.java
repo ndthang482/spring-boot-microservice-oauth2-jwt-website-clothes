@@ -28,12 +28,12 @@ public class BranchService implements IBranchService {
 
     @Override
     public List<Branch> findAll() {
-        return (List<Branch>) branchRepository.findAll();
+        return branchRepository.findAll();
     }
 
     @Override
     public Branch findById(Long id) {
-        return (Branch) branchRepository.findById(id).orElse(null);
+        return branchRepository.findById(id).orElse(null);
     }
 
 }

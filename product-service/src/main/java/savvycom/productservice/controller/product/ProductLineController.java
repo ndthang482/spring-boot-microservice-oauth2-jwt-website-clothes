@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -45,7 +45,7 @@ public class ProductLineController extends BaseController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -73,9 +73,8 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return successResponse(productLineService.findById(id));
     }
-    //put: update line
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -89,14 +88,6 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> updateProductLine(@RequestBody ProductLine productLine){
         return successResponse(productLineService.save(productLine));
     }
-
-    //find all discount by line
-
-//    @GetMapping("/discount/{id}")
-//    public ResponseEntity<?> findAllDiscountByLine(@PathVariable("id") Long id){
-//        return successResponse(productLineService.findAllDiscountByLine(id));
-//    }
-    //find all category by line
 
     @GetMapping("/category/{id}")
     @Operation(summary = "Find product_Line by categoryId")

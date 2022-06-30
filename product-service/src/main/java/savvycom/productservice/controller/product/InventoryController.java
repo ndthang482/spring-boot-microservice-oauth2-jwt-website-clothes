@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
@@ -28,7 +27,6 @@ public class InventoryController extends BaseController {
         this.inventoryService = InventoryService;
     }
 
-    //find all ịnventory
     @GetMapping("")
     @Operation(summary = "Find all product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all product_Line completed",
@@ -43,9 +41,8 @@ public class InventoryController extends BaseController {
     public ResponseEntity<?> findAll() {
         return successResponse(inventoryService.findAll());
     }
-    //Pos create a create inventory
     @PostMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create inventory")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create inventory completed",
             content = {@Content(mediaType = "application/json",
@@ -59,7 +56,6 @@ public class InventoryController extends BaseController {
     public ResponseEntity<?> newInventory(@RequestBody Inventory inventory){
         return successResponse(inventoryService.save(inventory));
     }
-    //find id by inventory
     @GetMapping("/{id}")
     @Operation(summary = "Find inventory by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find inventory by id completed",
@@ -89,9 +85,8 @@ public class InventoryController extends BaseController {
         inventoryService.updateQuantities(inventoryDTOs);
         return successResponse();
     }
-        //Put: update inventory
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update inventory by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update inventory completed",
             content = {@Content(mediaType = "application/json",
@@ -106,7 +101,6 @@ public class InventoryController extends BaseController {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
     }
-    //find all branch by inventory
     @GetMapping("/branch/{id}")
     @Operation(summary = "Find inventory by branchId")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find inventory by branchId completed",
@@ -121,8 +115,6 @@ public class InventoryController extends BaseController {
     public ResponseEntity<?> findAllBranchByInventory(@PathVariable("id") Long id){
         return successResponse(inventoryService.fineBranchByInventory(id));
     }
-
-    //find all product by inventory
 
     @GetMapping("/product/{id}")
     @Operation(summary = "Find inventory by productId")

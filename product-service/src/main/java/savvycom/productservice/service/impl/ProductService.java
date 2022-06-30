@@ -25,14 +25,10 @@ import java.util.stream.Collectors;
 public class ProductService implements IProductService {
     @Autowired
     private ProductRepository productRepository;
-
-    //nâng cấp của bean(khi không biết nó có chứa cái kia hay cái kia chứa nó)
     @Autowired
     private IImageService imageService;
-
     @Autowired
     private IProductLineService productLineService;
-
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -40,7 +36,6 @@ public class ProductService implements IProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
-    //delete set(active)
     @Override
     public void delete(Long id) {
         Product product= productRepository.findById(id).orElse(null);
@@ -49,7 +44,6 @@ public class ProductService implements IProductService {
             save(product);
         }
     }
-    //find id by product
     @Override
     public Product findById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -74,9 +68,6 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
     }
 
-
-
-    //productOutput được dựng lên và trả về Id của từng productOutput
     @Override
     public ProductOutput findProductOutputById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
@@ -93,7 +84,6 @@ public class ProductService implements IProductService {
                 .modifiedAt(product.getModifiedAt())
                 .build();
     }
-
 
     private ProductOutput mapToDTO(Product product){
         ProductOutput productOutput = new ProductOutput();
@@ -122,7 +112,7 @@ public class ProductService implements IProductService {
         product.setModifiedAt(productOutput.getModifiedAt());
         return product;
     }
-    //map productOutputById find all productOutput (ProductImage)
+    //use Pageable find all product
     @Override
     public ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
