@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
 import savvycom.productservice.domain.dto.ProductResponse;
+import savvycom.productservice.domain.entity.product.Category;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.message.ResponseMessage;
 import savvycom.productservice.service.IDiscountService;
+import savvycom.productservice.service.product.ICategoryService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 import savvycom.productservice.utils.AppConstants;
@@ -37,7 +39,7 @@ public class ProductController extends BaseController {
     private IProductLineService productLineService;
 
     @Autowired
-    private IDiscountService discountService;
+    private ICategoryService categoryService;
 
     @Autowired
     public ProductController(IProductService ProductService) {
@@ -75,6 +77,7 @@ public class ProductController extends BaseController {
     public void delete(@PathVariable Long id) {
         productService.delete(id);
     }
+
     @PutMapping("{id}")
 //    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product")
@@ -157,8 +160,7 @@ public class ProductController extends BaseController {
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
-    {
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
         name = "%" + name + "%";
         List<ProductLine> productLines = productLineService.findByNameLike(name);
         List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
@@ -186,44 +188,40 @@ public class ProductController extends BaseController {
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
-        {
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
         ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
-    @GetMapping("/category/{categoryName}")
-    public ResponseEntity<?> findCategoryIdByProductLine(
-            @PathVariable() String categoryName,
+
+//    @GetMapping("/category/{categoryName}")
+//    public ResponseEntity<?> findCategoryIdByProductLine(
+//            @PathVariable() String categoryName,
+//            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+//            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+//            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+//            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
+//        List<ProductLine> productLines = null;
+//        if (categoryName.equalsIgnoreCase("skirt")) {
+//            productLines = productLineService.findByCategoryId(1l);
+//        } else if (categoryName.equalsIgnoreCase("accessory")) {
+//            productLines = productLineService.findByCategoryId(2l);
+//        }
+//        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
+//        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
+//        return successResponse(productResponse);
+//    }
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findCategoryByName(
+            @PathVariable() Long categoryId,
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
     {
-        List<ProductLine> productLines = null;
-        if (categoryName.equalsIgnoreCase("skirt")) {
-            productLines = productLineService.findByCategoryId(1l);
-        } else if (categoryName.equalsIgnoreCase("accessory")) {
-            productLines = productLineService.findByCategoryId(2l);
-        }
+        List<ProductLine> productLines = productLineService.findByCategoryId(categoryId);
         List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
         ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
-
-//    find accessory by line
-
-//    @GetMapping("/accessory")
-//    public ResponseEntity<?> findCategoryByProductLine(
-//            @RequestParam(value = "q", defaultValue = AppConstants.DEFAULT_SKIRT_ID_2, required = false) Long q,
-//            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-//            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-//            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-//            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
-//    {
-//        List<ProductLine> productLines = productLineService.findByCategoryId(q);
-//        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
-//        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
-//        return successResponse(productResponse);
-//    }
 
 }

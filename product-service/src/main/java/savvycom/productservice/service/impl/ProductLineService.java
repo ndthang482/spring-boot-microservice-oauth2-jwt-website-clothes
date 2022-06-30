@@ -40,7 +40,6 @@ public class ProductLineService implements IProductLineService {
         return productLineRepository.findByCategoryId(categoryId);
     }
 
-
     @Override
     public List<ProductLine> findByNameLike(String name) {
 

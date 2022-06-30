@@ -149,7 +149,6 @@ public class ProductService implements IProductService {
         productResponse.setTotalElements(products.getTotalElements());
         productResponse.setTotalPages(products.getTotalPages());
         productResponse.setLast(products.isLast());
-
         return productResponse;
     }
 
