@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
@@ -42,7 +43,7 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping("")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create new category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create new category completed",
             content = {@Content(mediaType = "application/json",
@@ -73,7 +74,7 @@ public class CategoryController extends BaseController {
     }
 
     @PutMapping("{id}")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update category by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",

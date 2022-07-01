@@ -42,7 +42,8 @@ public class ProductDTO {
     @NotNull(message = "DiscountId must not be null")
     @Schema(description = "DiscountId of the product")
     private Long discountId;
-    private Review review;
+
+    private List<Review> review;
     @NotNull(message = "Active must not be null")
     @Schema(description = "Active of the product")
     private Long active;

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,10 @@ import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
 import savvycom.productservice.domain.dto.ProductResponse;
 import savvycom.productservice.domain.dto.ProductReviewResponse;
-import savvycom.productservice.domain.entity.Review;
-import savvycom.productservice.domain.entity.product.Category;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.entity.product.ProductLine;
-import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.message.ResponseMessage;
-import savvycom.productservice.service.IDiscountService;
 import savvycom.productservice.service.IReviewService;
-import savvycom.productservice.service.product.ICategoryService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 import savvycom.productservice.utils.AppConstants;
@@ -159,8 +153,8 @@ public class ProductController extends BaseController {
      * @return successResponse with List<ProductOutput>
      */
     @GetMapping("")
-    @Operation(summary = "Find all ProductOutput")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all ProductOutput completed",
+    @Operation(summary = "Find all Product")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all Product completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -240,7 +234,17 @@ public class ProductController extends BaseController {
      * @return successResponse with ProductResponse
      */
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> findCategoryByName(
+    @Operation(summary = "Find productLineId by categoryId")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Filter color, size, priceFrom, priceTo completed",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    public ResponseEntity<?> findByCategoryId(
     @PathVariable() Long categoryId,
     @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
     @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -252,16 +256,4 @@ public class ProductController extends BaseController {
         ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
         return successResponse(productResponse);
     }
-    @GetMapping("/review/{id}")
-    public ResponseEntity<?> findReviewByProductId (
-    @PathVariable() List<Long> id,
-    @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-    @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-    @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
-    {
-        ProductReviewResponse productReviewResponse = productService.findProductDTOByReview(id, pageNo, pageSize, sortBy, sortDir);
-        return successResponse(productReviewResponse);
-    }
-
 }

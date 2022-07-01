@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
@@ -31,23 +32,8 @@ public class ProductLineController extends BaseController {
         this.productLineService=ProductLineService;
     }
 
-    @GetMapping("")
-    @Operation(summary = "Find all product_Line")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all product_Line completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findAll() {
-        return successResponse(productLineService.findAll());
-    }
-
     @PostMapping("")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -61,22 +47,8 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> newProductLine(@RequestBody ProductLine productLine){
         return successResponse(productLineService.save(productLine));
     }
-    @GetMapping("/{id}")
-    @Operation(summary = "Find product_Line by id")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find product_Line by id completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return successResponse(productLineService.findById(id));
-    }
     @PutMapping("{id}")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product_Line")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product_Line completed",
             content = {@Content(mediaType = "application/json",
@@ -90,10 +62,9 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> updateProductLine(@RequestBody ProductLine productLine){
         return successResponse(productLineService.save(productLine));
     }
-
-    @GetMapping("/category/{id}")
-    @Operation(summary = "Find product_Line by categoryId")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find product_Line by categoryId completed",
+    @GetMapping("/{id}/detail")
+    @Operation(summary = "Find productLine detail by product")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find product_Line by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -102,8 +73,7 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findAllCategoryByLine(@PathVariable("id") Long id){
-        return successResponse(productLineService.findByCategoryId(id));
+    public ResponseEntity<?> findDetailById(@PathVariable Long id) {
+        return successResponse(productLineService.findDetailById(id));
     }
-
 }

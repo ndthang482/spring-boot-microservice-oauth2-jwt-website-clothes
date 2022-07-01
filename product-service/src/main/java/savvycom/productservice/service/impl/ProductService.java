@@ -7,12 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import savvycom.productservice.domain.dto.ProductDTO;
-import savvycom.productservice.domain.dto.ProductResponse;
-import savvycom.productservice.domain.dto.ProductReviewResponse;
-import savvycom.productservice.domain.entity.Review;
+import savvycom.productservice.domain.dto.*;
 import savvycom.productservice.domain.entity.product.Product;
-import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.repository.product.ProductRepository;
@@ -21,12 +17,8 @@ import savvycom.productservice.service.IReviewService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-//class ProductService implements to interface IProductService
-//bắt buộc rằng productService phải override all interface IProductService
-
 @Service
 public class ProductService implements IProductService {
     @Autowired
@@ -74,6 +66,7 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public ProductOutput findProductOutputById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
@@ -85,7 +78,7 @@ public class ProductService implements IProductService {
                 .price(product.getPrice())
                 .discountId(product.getDiscountId())
                 .active(product.getActive())
-                .images(imageService.findByProductId(product.getId()))
+                .images(imageService.findByProductId(product.getProductLineId()))
                 .createdAt(product.getCreatedAt())
                 .modifiedAt(product.getModifiedAt())
                 .build();
@@ -97,7 +90,7 @@ public class ProductService implements IProductService {
         productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
-        productOutput.setImages(imageService.findByProductId(product.getId()));
+        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
         productOutput.setPrice(product.getPrice());
         productOutput.setActive(product.getActive());
         productOutput.setDiscountId(product.getDiscountId());
@@ -109,37 +102,44 @@ public class ProductService implements IProductService {
     private ProductDTO mapDTO(Product product){
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(product.getId());
-        productDTO.setProductLine(productLineService.findById(product.getProductLineId()));
         productDTO.setColor(product.getColor());
         productDTO.setSize(product.getSize());
-        productDTO.setImages(imageService.findByProductId(product.getId()));
+        productDTO.setProductLine(productLineService.findById(product.getProductLineId()));
+        productDTO.setImages(imageService.findByProductId(product.getProductLineId()));
         productDTO.setPrice(product.getPrice());
+        productDTO.setDiscountId(product.getDiscountId());
         productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
         productDTO.setActive(product.getActive());
-        productDTO.setDiscountId(product.getDiscountId());
         productDTO.setCreatedAt(product.getCreatedAt());
         productDTO.setModifiedAt(product.getModifiedAt());
         return productDTO;
     }
-
-
+    private ProductDTO mapToDTONoProductLine(Product product){
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setColor(product.getColor());
+        productDTO.setSize(product.getSize());
+        productDTO.setImages(imageService.findByProductId(product.getProductLineId()));
+        productDTO.setPrice(product.getPrice());
+        productDTO.setDiscountId(product.getDiscountId());
+        productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
+        productDTO.setActive(product.getActive());
+        productDTO.setCreatedAt(product.getCreatedAt());
+        productDTO.setModifiedAt(product.getModifiedAt());
+        return productDTO;
+    }
 
     //use Pageable find all product
     @Override
     public ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-
         // create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-
         Page<Product> products = productRepository.findAll(pageable);
-
         List<Product> ListOfProducts = products.getContent();
-
         List<ProductOutput> content = ListOfProducts.stream().map(product -> mapToDTO(product))
                 .collect(Collectors.toList());
-
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(content);
         productResponse.setPageNo(products.getNumber());
@@ -147,19 +147,17 @@ public class ProductService implements IProductService {
         productResponse.setTotalElements(products.getTotalElements());
         productResponse.setTotalPages(products.getTotalPages());
         productResponse.setLast(products.isLast());
-
         return productResponse;
     }
-
     @Override
-    public ProductResponse findByProductLineId(List<Long> productLineIds, int pageNo, int pageSize
+    public ProductResponse findByProductLineId(List<Long> productLineId, int pageNo, int pageSize
             , String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         // create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> products = productRepository.findByProductLineIdIn(productLineIds, pageable);
+        Page<Product> products = productRepository.findByProductLineIdIn(productLineId, pageable);
         List<ProductOutput> content = products.getContent().stream()
                 .map(product -> mapToDTO(product)).collect(Collectors.toList());
         ProductResponse productResponse = new ProductResponse();
@@ -195,26 +193,10 @@ public class ProductService implements IProductService {
         return productResponse;
     }
 
-    // find review
     @Override
-    public ProductReviewResponse findProductDTOByReview(List<Long> id
-            , int pageNo, int pageSize, String sortBy, String sortDir) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        // create Pageable instance
-        Page<Product> products = productRepository.findByIdIn(id,
-                PageRequest.of(pageNo, pageSize, sort));
-        List<ProductDTO> content = products.getContent().stream()
-                .map(product -> mapDTO(product)).collect(Collectors.toList());
-        ProductReviewResponse productReviewResponse = new ProductReviewResponse();
-        productReviewResponse.setContent(content);
-        productReviewResponse.setPageNo(products.getNumber());
-        productReviewResponse.setPageSize(products.getSize());
-        productReviewResponse.setTotalElements(products.getTotalElements());
-        productReviewResponse.setTotalPages(products.getTotalPages());
-        productReviewResponse.setLast(products.isLast());
-        return productReviewResponse;
+    public List<ProductDTO> findListProductDTOByProductLineId(Long productLineId) {
+        return productRepository.findByProductLineId(productLineId).stream().map(product ->
+                mapToDTONoProductLine(product)).collect(Collectors.toList());
     }
 
 }

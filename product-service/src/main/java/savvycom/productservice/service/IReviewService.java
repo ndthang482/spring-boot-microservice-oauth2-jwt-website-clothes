@@ -13,7 +13,7 @@ public interface IReviewService {
     
     List<Review> findReviewUserId(Long userId);
 
-    Review findReviewByProductId(Long productId);
+    List<Review> findReviewByProductId(Long productId);
 
     Review findById(Long id);
 }

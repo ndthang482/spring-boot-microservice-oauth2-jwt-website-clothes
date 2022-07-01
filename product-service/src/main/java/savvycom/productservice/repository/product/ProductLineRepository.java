@@ -16,4 +16,5 @@ public interface ProductLineRepository extends JpaRepository<ProductLine, Long> 
     Optional<ProductLine> findById(Long id);
 
     List<ProductLine> findByCategoryId(Long categoryId);
+
 }

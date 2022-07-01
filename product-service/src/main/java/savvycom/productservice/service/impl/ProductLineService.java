@@ -1,20 +1,24 @@
 package savvycom.productservice.service.impl;
 //@Service hold the business handling code in it
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import savvycom.productservice.domain.dto.ProductLineDTO;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.service.product.IProductLineService;
+import savvycom.productservice.service.product.IProductService;
 
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class ProductLineService implements IProductLineService {
-    private ProductLineRepository productLineRepository;
+    private final ProductLineRepository productLineRepository;
 
-    public ProductLineService(ProductLineRepository productLineRepository) {
-        this.productLineRepository = productLineRepository;
-    }
+    private final IProductService productService;
+
     @Override
     public ProductLine save(ProductLine productLine) {
         return productLineRepository.save(productLine);
@@ -30,9 +34,25 @@ public class ProductLineService implements IProductLineService {
         return productLineRepository.findAll();
     }
 
+
     @Override
     public ProductLine findById(Long id) {
         return productLineRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public ProductLineDTO findDetailById(Long id) {
+       ProductLine productLine = productLineRepository.findById(id).orElse(null);
+       if(productLine !=null){
+           return ProductLineDTO.builder()
+                   .id(productLine.getId())
+                   .name(productLine.getName())
+                   .desc(productLine.getDesc())
+                   .categoryId(productLine.getCategoryId())
+                   .productDTOs(productService.findListProductDTOByProductLineId(productLine.getId()))
+                   .build();
+       }
+       return null;
     }
 
     @Override
@@ -45,5 +65,6 @@ public class ProductLineService implements IProductLineService {
 
         return productLineRepository.findByNameLike(name);
     }
+
 
 }

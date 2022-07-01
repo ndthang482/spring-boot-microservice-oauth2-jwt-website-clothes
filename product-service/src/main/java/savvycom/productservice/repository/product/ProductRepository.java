@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import savvycom.productservice.domain.dto.ProductDTO;
 import savvycom.productservice.domain.entity.product.Product;
+import savvycom.productservice.domain.entity.product.ProductLine;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +17,9 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long id);
 
-    Page<Product> findByProductLineIdIn(List<Long> productLineIds, Pageable pageable);
+    Page<Product> findByProductLineIdIn(List<Long> productLineId, Pageable pageable);
 
     Page<Product> findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo,Long discountId, Pageable pageable);
-    Page<Product> findByIdIn(List<Long> id, Pageable pageable);
 
+    List<Product> findByProductLineId(Long id);
 }

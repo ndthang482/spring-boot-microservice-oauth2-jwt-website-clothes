@@ -1,7 +1,6 @@
 package savvycom.productservice.service.product;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import savvycom.productservice.domain.dto.ProductDTO;
 import savvycom.productservice.domain.dto.ProductResponse;
 import savvycom.productservice.domain.dto.ProductReviewResponse;
 import savvycom.productservice.domain.entity.product.Product;
@@ -19,12 +18,15 @@ public interface IProductService {
 
     ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findByProductLineId(List<Long> id, int pageNo, int pageSize, String sortBy, String sortDir);
+    ProductResponse findByProductLineId(List<Long> productLineId, int pageNo, int pageSize, String sortBy, String sortDir);
 
     ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
            ,Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductReviewResponse findProductDTOByReview(List<Long> id, int pageNo, int pageSize, String sortBy, String sortDir);
+//    ProductReviewResponse findProductDTOByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir);
+    List<ProductDTO> findListProductDTOByProductLineId(Long productLineId);
+
+
 }
 
 

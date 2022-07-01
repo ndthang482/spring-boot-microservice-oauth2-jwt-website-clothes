@@ -39,7 +39,7 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public Review findReviewByProductId(Long productId) {
+    public List<Review> findReviewByProductId(Long productId) {
         return reviewRepository.findReviewByProductId(productId);
     }
 

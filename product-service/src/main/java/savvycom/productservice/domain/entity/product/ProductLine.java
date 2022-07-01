@@ -15,7 +15,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name="product_line")
-public class    ProductLine {
+public class ProductLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
