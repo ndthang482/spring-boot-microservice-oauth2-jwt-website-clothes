@@ -131,7 +131,7 @@ public class ProductController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByProductResponse(
+    public ResponseEntity<?> findByProduct(
     @RequestParam(value = "categoryId", required = false) Long categoryId,
     @RequestParam(value = "name", required = false) String name,
     @RequestParam(value = "size", required = false) String size,
@@ -155,8 +155,7 @@ public class ProductController extends BaseController {
             PageImpl<?> productResponse1 = productService.findByProductLineId(productLineIds1, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse1);
         }
-         else if(categoryId == null && name != null && size == null && color == null && discountId == null
-                && priceFrom == null && priceTo == null){
+         else if(categoryId == null && name != null && size == null && color == null && discountId == null){
             name = "%" + name + "%";
             List<ProductLine> productLines = productLineService.findByNameLike(name);
             List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());

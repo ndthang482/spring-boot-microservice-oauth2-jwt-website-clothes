@@ -2,6 +2,7 @@ package savvycom.productservice.repository.product;
 // @Repo access database, class click database.
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import savvycom.productservice.domain.entity.product.Inventory;
 
@@ -12,5 +13,10 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     Optional<Inventory> findById(Long id);
     Inventory findByBranchIdAndProductId(Long branchId, Long productId);
 
+    List<Inventory> findByBranchId(Long branchId);
+//    @Query(value = "select id,product_id,branch_id,created_at, modified_at,SUM(quantity) as 'quantity' FROM inventory group by product_id", nativeQuery = true)
+
     List<Inventory> findByProductId(Long productId);
+
+    List<Inventory> findByQuantity(Long quantity);
 }

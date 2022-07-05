@@ -88,11 +88,10 @@ public class ProductService implements IProductService {
         productOutput.setId(product.getId());
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
-        productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
+        productOutput.setProductLine(productLineService.findById(product.getId()));
         productOutput.setPrice(product.getPrice());
         productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
         productOutput.setDiscountId(product.getDiscountId());
-        productOutput.setInventories(inventoryService.findByProductId(product.getId()));
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
         productOutput.setModifiedAt(LocalDateTime.now());
@@ -105,7 +104,8 @@ public class ProductService implements IProductService {
         productOutput.setSize(product.getSize());
         productOutput.setProductLine(productLineService.findById(product.getId()));
         productOutput.setPrice(product.getPrice());
-        productOutput.setImages(imageService.findByProductId(product.getId()));
+        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
+        productOutput.setInventories(inventoryService.findByProductId(product.getProductLineId()));
         productOutput.setDiscountId(product.getDiscountId());
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
@@ -138,7 +138,7 @@ public class ProductService implements IProductService {
         Page<Product> products = productRepository.findAll(pageable);
         List<ProductOutput> content = products.getContent()
                 .stream()
-                .map(product -> mapNewDTO(product))
+                .map(product -> mapToDTO(product))
                 .collect(Collectors.toList());
         return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
     }
@@ -169,7 +169,7 @@ public class ProductService implements IProductService {
                 , priceFrom, priceTo, discountId, PageRequest.of(pageNo, pageSize, sort));
         List<ProductOutput> content = products.getContent()
                 .stream()
-                .map(product -> mapNewDTO(product))
+                .map(product -> mapToDTO(product))
                 .collect(Collectors.toList());
         return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
     }
@@ -254,7 +254,7 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductOutput> findProductOutput(Long id) {
         return productRepository.findAll().stream().map(product ->
-                mapToDTO(product)).collect(Collectors.toList());
+                mapNewDTO(product)).collect(Collectors.toList());
     }
 
 

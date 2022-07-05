@@ -12,12 +12,13 @@ public interface IInventoryService {
 
     Inventory findById(Long id);
 
-    List<Inventory> fineBranchByInventory(Long branchId);
+    List<Inventory> findByBranchId(Long branchId);
 
     Inventory updateInventory(Inventory inventory);
     Inventory findByBranchIdAndProductId(Long branchId, Long productId);
 
     void updateQuantities(List<InventoryDTO> inventoryDTOs);
-
     List<Inventory> findByProductId(Long productId);
+    List<Inventory> findByQuantity(Long quantity);
+
 }

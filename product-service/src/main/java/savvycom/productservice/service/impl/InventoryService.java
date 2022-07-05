@@ -33,17 +33,19 @@ public class InventoryService implements IInventoryService {
         return inventoryRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public List<Inventory> fineBranchByInventory(Long branchId) {
-        return inventoryRepository.findAll().stream()
-                .filter(inventory -> inventory.getBranchId() == branchId)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<Inventory> fineBranchByInventory(Long branchId) {
+//        return inventoryRepository.findAll().stream()
+//                .filter(inventory -> inventory.getBranchId() == branchId)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
-    public List<Inventory> findByProductId(Long productId) {
-        return inventoryRepository.findByProductId(productId);
+    public List<Inventory> findByBranchId(Long branchId) {
+        return inventoryRepository.findByBranchId(branchId);
     }
+
+
 
     @Override
     public Inventory updateInventory(Inventory inventory) {
@@ -67,5 +69,16 @@ public class InventoryService implements IInventoryService {
                 .collect(Collectors.toList());
         inventoryRepository.saveAll(inventories);
     }
+
+    @Override
+    public List<Inventory> findByProductId(Long productId) {
+        return inventoryRepository.findByProductId(productId);
+    }
+
+    @Override
+    public List<Inventory> findByQuantity(Long quantity) {
+        return inventoryRepository.findByQuantity(quantity);
+    }
+
 
 }
