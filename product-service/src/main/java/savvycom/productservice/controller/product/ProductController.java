@@ -168,8 +168,7 @@ public class ProductController extends BaseController {
             return successResponse(productResponse3);
         }
          else if(categoryId == null && name == null && size != null && color == null && discountId == null){
-            PageImpl<?> productResponse4 = productService.findProductBySize
-                    (size, pageNo, pageSize, sortBy, sortDir);
+            PageImpl<?> productResponse4 = productService.findProductBySize(size, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse4);
         }
          else if(categoryId == null && name == null && size == null && color != null  && discountId == null){

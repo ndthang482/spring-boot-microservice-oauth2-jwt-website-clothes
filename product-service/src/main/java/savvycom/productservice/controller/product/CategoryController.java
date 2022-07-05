@@ -60,7 +60,7 @@ public class CategoryController extends BaseController {
         return successResponse(categoryService.save(category));
     }
     @GetMapping("")
-    @Operation(summary = "Update category by id")
+    @Operation(summary = "Find all category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -79,7 +79,7 @@ public class CategoryController extends BaseController {
         return successResponse(categoryService.findByCategory(pageNo, pageSize , sortBy, sortDir));
     }
     @GetMapping("/{id}")
-    @Operation(summary = "Update category by id")
+    @Operation(summary = "Find category by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})

@@ -58,7 +58,7 @@ public class ProductService implements IProductService {
                         .price(product.getPrice())
                         .discountId(product.getDiscountId())
                         .active(product.getActive())
-                        .images(imageService.findByProductId(product.getProductLineId()))
+                        .images(imageService.findByProductId(product.getId()))
                         .createdAt(LocalDateTime.now())
                         .modifiedAt(LocalDateTime.now())
                         .build())
@@ -73,11 +73,11 @@ public class ProductService implements IProductService {
                 .id(product.getId())
                 .color(product.getColor())
                 .size(product.getSize())
-                .productLine(productLineService.findById(product.getProductLineId()))
+                .productLine(productLineService.findById(product.getId()))
                 .price(product.getPrice())
                 .discountId(product.getDiscountId())
                 .active(product.getActive())
-                .images(imageService.findByProductId(product.getProductLineId()))
+                .images(imageService.findByProductId(product.getId()))
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .build();
@@ -90,7 +90,7 @@ public class ProductService implements IProductService {
         productOutput.setSize(product.getSize());
         productOutput.setProductLine(productLineService.findById(product.getId()));
         productOutput.setPrice(product.getPrice());
-        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
+        productOutput.setImages(imageService.findByProductId(product.getId()));
         productOutput.setDiscountId(product.getDiscountId());
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
@@ -102,9 +102,9 @@ public class ProductService implements IProductService {
         productOutput.setId(product.getId());
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
-        productOutput.setProductLine(productLineService.findById(product.getId()));
+        productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
         productOutput.setPrice(product.getPrice());
-        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
+        productOutput.setImages(imageService.findByProductId(product.getId()));
         productOutput.setInventories(inventoryService.findByProductId(product.getProductLineId()));
         productOutput.setDiscountId(product.getDiscountId());
         productOutput.setActive(product.getActive());
@@ -118,7 +118,7 @@ public class ProductService implements IProductService {
         productDTO.setId(product.getId());
         productDTO.setColor(product.getColor());
         productDTO.setSize(product.getSize());
-        productDTO.setImages(imageService.findByProductId(product.getProductLineId()));
+        productDTO.setImages(imageService.findByProductId(product.getId()));
         productDTO.setPrice(product.getPrice());
         productDTO.setDiscountId(product.getDiscountId());
         productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
