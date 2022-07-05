@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import savvycom.productservice.domain.entity.Image;
 import savvycom.productservice.domain.entity.Review;
+import savvycom.productservice.domain.entity.product.Inventory;
 import savvycom.productservice.domain.entity.product.ProductLine;
 
 import javax.validation.constraints.NotBlank;
@@ -36,6 +37,8 @@ public class ProductDTO {
     private Long discountId;
 
     private List<Review> review;
+
+    private List<Inventory> inventories;
 
     private Long active;
 

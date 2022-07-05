@@ -8,10 +8,7 @@ public class AppConstants {
     public  static final String DEFAULT_PAGE_SIZE = "10";
     public static final String DEFAULT_SORT_BY = "id";
     public static final String DEFAULT_SORT_DIRECTION = "asc";
-    public static final String DEFAULT_SIZE= "M";
-    public  static final String DEFAULT_COLOR = "pink";
     public static final String DEFAULT_PRICE_FROM = "0" ;
     public static final String DEFAULT_PRICE_TO = "5000000";
-    public static final String DEFAULT_DISCOUNT_ID = "3";
 
 }

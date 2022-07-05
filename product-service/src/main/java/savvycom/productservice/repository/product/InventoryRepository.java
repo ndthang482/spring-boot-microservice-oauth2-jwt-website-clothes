@@ -13,10 +13,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     Optional<Inventory> findById(Long id);
     Inventory findByBranchIdAndProductId(Long branchId, Long productId);
 
-    List<Inventory> findByBranchId(Long branchId);
-//    @Query(value = "select id,product_id,branch_id,created_at, modified_at,SUM(quantity) as 'quantity' FROM inventory group by product_id", nativeQuery = true)
-
     List<Inventory> findByProductId(Long productId);
 
-    List<Inventory> findByQuantity(Long quantity);
+    Inventory findByQuantity(Long quantity);
 }

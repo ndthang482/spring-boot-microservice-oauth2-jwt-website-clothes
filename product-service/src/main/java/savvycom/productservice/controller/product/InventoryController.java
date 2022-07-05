@@ -28,11 +28,14 @@ public class InventoryController extends BaseController {
     public InventoryController(IInventoryService InventoryService) {
         this.inventoryService = InventoryService;
     }
-
+    /**
+     * Create new product inventory
+     * @return successResponse
+     */
     @PostMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create inventory")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create inventory completed",
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product inventory completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -44,9 +47,13 @@ public class InventoryController extends BaseController {
     public ResponseEntity<?> newInventory(@RequestBody Inventory inventory){
         return successResponse(inventoryService.save(inventory));
     }
+    /**
+     * Update quantity while user order
+     * @return successResponse
+     */
     @PostMapping("/quantity")
-    @Operation(summary = "Find quantity while cart")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Changed quantity while cart completed",
+    @Operation(summary = "Find quantity while user order")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update quantity while order completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -59,10 +66,14 @@ public class InventoryController extends BaseController {
         inventoryService.updateQuantities(inventoryDTOs);
         return successResponse();
     }
+    /**
+     * Update product inventory
+     * @return successResponse
+     */
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update inventory by id")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update inventory completed",
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product inventory completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -75,9 +86,13 @@ public class InventoryController extends BaseController {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
     }
-    @GetMapping("")
-    @Operation(summary = "Find all product_Line")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all product_Line completed",
+    /**
+     * Find branch, if quantity = 0
+     * @return successResponse
+     */
+    @GetMapping("{id}")
+    @Operation(summary = "Find branch by id, if quantity = 0")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product inventory completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -86,12 +101,8 @@ public class InventoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findAll() {
-        return successResponse(inventoryService.findAll());
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findInventoryByQuantity(@PathVariable("id") Long id)
+    {
         return successResponse(inventoryService.findById(id));
     }
 }

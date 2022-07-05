@@ -47,37 +47,17 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductOutput> findProductByProductLine(Long productLineId) {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getProductLineId() == productLineId)
-                .map(product -> ProductOutput.builder()
-                        .id(product.getId())
-                        .color(product.getColor())
-                        .size(product.getSize())
-                        .productLine(productLineService.findById(product.getProductLineId()))
-                        .price(product.getPrice())
-                        .discountId(product.getDiscountId())
-                        .active(product.getActive())
-                        .images(imageService.findByProductId(product.getId()))
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-
-    @Override
     public ProductOutput findProductOutputById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
         return ProductOutput.builder()
                 .id(product.getId())
                 .color(product.getColor())
                 .size(product.getSize())
-                .productLine(productLineService.findById(product.getId()))
+                .productLine(productLineService.findById(product.getProductLineId()))
                 .price(product.getPrice())
                 .discountId(product.getDiscountId())
                 .active(product.getActive())
-                .images(imageService.findByProductId(product.getId()))
+                .images(imageService.findByProductId(product.getProductLineId()))
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .build();
@@ -88,9 +68,9 @@ public class ProductService implements IProductService {
         productOutput.setId(product.getId());
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
-        productOutput.setProductLine(productLineService.findById(product.getId()));
+        productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
         productOutput.setPrice(product.getPrice());
-        productOutput.setImages(imageService.findByProductId(product.getId()));
+        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
         productOutput.setDiscountId(product.getDiscountId());
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
@@ -102,10 +82,10 @@ public class ProductService implements IProductService {
         productOutput.setId(product.getId());
         productOutput.setColor(product.getColor());
         productOutput.setSize(product.getSize());
-        productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
+        productOutput.setProductLine(productLineService.findById(product.getId()));
         productOutput.setPrice(product.getPrice());
         productOutput.setImages(imageService.findByProductId(product.getId()));
-        productOutput.setInventories(inventoryService.findByProductId(product.getProductLineId()));
+        productOutput.setInventories(inventoryService.findByProductId(product.getId()));
         productOutput.setDiscountId(product.getDiscountId());
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
@@ -122,6 +102,7 @@ public class ProductService implements IProductService {
         productDTO.setPrice(product.getPrice());
         productDTO.setDiscountId(product.getDiscountId());
         productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
+        productDTO.setInventories(inventoryService.findByProductId(product.getProductLineId()));
         productDTO.setActive(product.getActive());
         productDTO.setCreatedAt(LocalDateTime.now());
         productDTO.setModifiedAt(LocalDateTime.now());
@@ -237,25 +218,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public PageImpl<?> findByPriceBetween(Long priceFrom, Long priceTo, int pageNo, int pageSize, String sortBy, String sortDir)
-    {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        // create Pageable instance
-        Page<Product> products = productRepository.findByPriceBetween(priceFrom, priceTo, PageRequest.of(pageNo, pageSize, sort));
-        List<ProductOutput> content = products.getContent()
-                .stream()
-                .map(product -> mapToDTO(product))
-                .collect(Collectors.toList());
-        return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
-    }
-
-    @Override
     public List<ProductOutput> findProductOutput(Long id) {
         return productRepository.findAll().stream().map(product ->
                 mapNewDTO(product)).collect(Collectors.toList());
     }
-
 
 }

@@ -20,9 +20,6 @@ public class CategoryService implements ICategoryService {
 
     private final IProductService productService;
 
-    private IInventoryService inventoryService;
-
-
     @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
@@ -44,17 +41,6 @@ public class CategoryService implements ICategoryService {
     }
 
 
-    public CategoryDTO findProductLineByCategory(Long id){
-        Category category = categoryRepository.findById(id).orElse(null);
-        if(category!= null){
-            return CategoryDTO.builder()
-                    .id(category.getId())
-                    .name(category.getName())
-                    .productOutputs(productService.findProductOutput(category.getId()))
-                    .build();
-        }
-        return null;
-    }
     @Override
     public PageImpl<?> findByCategory(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()

@@ -14,7 +14,6 @@ public interface ICategoryService {
     List<Category> findAll();
 
     Category findById(Long id);
-    CategoryDTO findProductLineByCategory(Long id);
 
     PageImpl<?> findByCategory(int pageNo, int pageSize, String sortBy, String sortDir);
 }

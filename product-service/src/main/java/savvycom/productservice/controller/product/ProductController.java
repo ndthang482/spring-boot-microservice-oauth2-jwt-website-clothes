@@ -137,7 +137,7 @@ public class ProductController extends BaseController {
     @RequestParam(value = "size", required = false) String size,
     @RequestParam(value = "color", required = false) String color,
     @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
-    @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceTo,
+    @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_TO, required = false) Long priceTo,
     @RequestParam(value = "discountId", required = false) Long discountId,
     @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
     @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,

@@ -27,10 +27,13 @@ public class CategoryController extends BaseController {
     public CategoryController(ICategoryService ProductCategoryService){
         this.categoryService=ProductCategoryService;
     }
-
+    /**
+     * Create new Product category
+     * @return successResponse
+     */
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin')")
-    @Operation(summary = "Create new category")
+    @Operation(summary = "Create new product category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create new category completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -43,10 +46,13 @@ public class CategoryController extends BaseController {
     public ResponseEntity<?> newCategory(@RequestBody Category category){
         return successResponse(categoryService.save(category));
     }
-
+    /**
+     * Update new Product category
+     * @return successResponse
+     */
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    @Operation(summary = "Update category by id")
+    @Operation(summary = "Update product category by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -59,8 +65,13 @@ public class CategoryController extends BaseController {
     public ResponseEntity<?> updateCategory(@RequestBody Category category){
         return successResponse(categoryService.save(category));
     }
+    /**
+     * Find all Product category
+     * @Param pageNo, pageSize, sortBy, sortDir
+     * @return successResponse
+     */
     @GetMapping("")
-    @Operation(summary = "Find all category")
+    @Operation(summary = "Find all product category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -78,20 +89,5 @@ public class CategoryController extends BaseController {
     {
         return successResponse(categoryService.findByCategory(pageNo, pageSize , sortBy, sortDir));
     }
-    @GetMapping("/{id}")
-    @Operation(summary = "Find category by id")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findProductLineByCategory(@PathVariable Long id){
-        return successResponse(categoryService.findProductLineByCategory(id));
-    }
-
 
 }

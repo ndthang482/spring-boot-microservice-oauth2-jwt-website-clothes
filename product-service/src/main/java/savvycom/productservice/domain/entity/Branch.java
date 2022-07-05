@@ -24,6 +24,8 @@ public class Branch {
 
     private String address;
 
+    private String phone;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;

@@ -11,8 +11,6 @@ public interface IProductService {
     Product save(Product product);
 
     void deleteById(Long id);
-   List<ProductOutput> findProductByProductLine(Long productLineId);
-
     ProductOutput findProductOutputById(Long id);
 
     PageImpl<?> findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
@@ -30,8 +28,6 @@ public interface IProductService {
     PageImpl<?> findProductByDiscountId(Long discountId, int pageNo, int pageSize, String sortBy, String sortDir);
 
     PageImpl<?> findByColorAndSize(String color, String size, int pageNo, int pageSize, String sortBy, String sortDir);
-
-    PageImpl<?> findByPriceBetween(Long priceFrom, Long priceTo, int pageNo, int pageSize, String sortBy, String sortDir);
 
     List<ProductOutput> findProductOutput(Long id);
 

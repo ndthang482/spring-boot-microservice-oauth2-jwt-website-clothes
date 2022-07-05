@@ -3,7 +3,9 @@ package savvycom.productservice.service.impl;
 
 import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.InventoryDTO;
+import savvycom.productservice.domain.entity.Branch;
 import savvycom.productservice.domain.entity.product.Inventory;
+import savvycom.productservice.repository.BranchRepository;
 import savvycom.productservice.repository.product.InventoryRepository;
 import savvycom.productservice.service.product.IInventoryService;
 
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class InventoryService implements IInventoryService {
     private InventoryRepository inventoryRepository;
+    private BranchRepository branchRepository;
 
     public InventoryService(InventoryRepository inventoryRepository) {
         this.inventoryRepository = inventoryRepository;
@@ -23,30 +26,16 @@ public class InventoryService implements IInventoryService {
         return inventoryRepository.save(inventory);
     }
 
-    @Override
-    public List<Inventory> findAll() {
-        return inventoryRepository.findAll();
-    }
 
     @Override
-    public Inventory findById(Long id) {
-        return inventoryRepository.findById(id).orElse(null);
+    public Branch findById(Long id) {
+        Inventory inventory = inventoryRepository.findById(id).orElse(null);
+        if(inventory.getQuantity() == 0){
+            return null;
+        }else{
+            return branchRepository.findById(id).orElse(null);
+        }
     }
-
-//    @Override
-//    public List<Inventory> fineBranchByInventory(Long branchId) {
-//        return inventoryRepository.findAll().stream()
-//                .filter(inventory -> inventory.getBranchId() == branchId)
-//                .collect(Collectors.toList());
-//    }
-
-    @Override
-    public List<Inventory> findByBranchId(Long branchId) {
-        return inventoryRepository.findByBranchId(branchId);
-    }
-
-
-
     @Override
     public Inventory updateInventory(Inventory inventory) {
         return inventoryRepository.save(inventory);
@@ -76,8 +65,8 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public List<Inventory> findByQuantity(Long quantity) {
-        return inventoryRepository.findByQuantity(quantity);
+    public List<Inventory> findAll() {
+        return inventoryRepository.findAll();
     }
 
 

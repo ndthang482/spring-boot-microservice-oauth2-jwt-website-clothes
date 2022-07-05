@@ -11,8 +11,6 @@ import java.util.Optional;
 public interface IProductLineService {
     ProductLine save(ProductLine productLine);
 
-    void delete(Long id);
-
     List<ProductLine> findAll();
 
    ProductLine findById(Long id);
@@ -21,4 +19,6 @@ public interface IProductLineService {
     List<ProductLine> findByCategoryId(Long categoryId);
 
     List<ProductLine> findByNameLike(String name);
+
+    void deleteById(Long id);
 }

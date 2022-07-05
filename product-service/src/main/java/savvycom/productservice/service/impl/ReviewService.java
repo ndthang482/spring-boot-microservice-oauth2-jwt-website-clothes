@@ -43,11 +43,4 @@ public class ReviewService implements IReviewService {
     }
 
 
-    @Override
-    public List<Review> findReviewUserId(Long userId) {
-        return reviewRepository.findAll().stream()
-                .filter(review -> review.getUserId() == userId)
-                .collect(Collectors.toList());
-    }
-
 }

@@ -32,6 +32,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByColorAndSize(String color, String size, Pageable pageable);
 
-    @Query(value = "select * from product where price between 1000000 and 3000000 order by price asc", nativeQuery = true)
-    Page<Product> findByPriceBetween(Long priceFrom, Long priceTo, Pageable pageable);
+//    @Query(value = "select * from product where price between 1000000 and 3000000 order by price asc", nativeQuery = true)
+//    Page<Product> findByPriceBetween(Long priceFrom, Long priceTo, Pageable pageable);
 }

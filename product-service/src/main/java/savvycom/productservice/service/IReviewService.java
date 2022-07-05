@@ -10,8 +10,6 @@ public interface IReviewService {
     void delete(Long id);
 
     List<Review> findAll();
-    
-    List<Review> findReviewUserId(Long userId);
 
     List<Review> findReviewByProductId(Long productId);
 
