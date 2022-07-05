@@ -14,10 +14,10 @@ public interface IInventoryService {
 
     List<Inventory> fineBranchByInventory(Long branchId);
 
-    List<Inventory> findProductByInventory(Long productId);
-
     Inventory updateInventory(Inventory inventory);
     Inventory findByBranchIdAndProductId(Long branchId, Long productId);
 
     void updateQuantities(List<InventoryDTO> inventoryDTOs);
+
+    List<Inventory> findByProductId(Long productId);
 }

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.security.Timestamp;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,8 +36,8 @@ public class Product {
 
     private Long active;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date modifiedAt;
+    private LocalDateTime modifiedAt;
 
 }

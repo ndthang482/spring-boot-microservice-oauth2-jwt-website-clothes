@@ -41,10 +41,8 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public List<Inventory> findProductByInventory(Long productId) {
-        return inventoryRepository.findAll().stream()
-                .filter(inventory -> inventory.getProductId() == productId)
-                .collect(Collectors.toList());
+    public List<Inventory> findByProductId(Long productId) {
+        return inventoryRepository.findByProductId(productId);
     }
 
     @Override
@@ -69,4 +67,5 @@ public class InventoryService implements IInventoryService {
                 .collect(Collectors.toList());
         inventoryRepository.saveAll(inventories);
     }
+
 }

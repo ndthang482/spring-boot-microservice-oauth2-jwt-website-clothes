@@ -1,6 +1,8 @@
 package savvycom.productservice.service.product;
 
+import savvycom.productservice.domain.dto.CategoryDTO;
 import savvycom.productservice.domain.dto.ProductLineDTO;
+import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.entity.product.ProductLine;
 
 import java.util.List;
@@ -19,5 +21,4 @@ public interface IProductLineService {
     List<ProductLine> findByCategoryId(Long categoryId);
 
     List<ProductLine> findByNameLike(String name);
-
 }

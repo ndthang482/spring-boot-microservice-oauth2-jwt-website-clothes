@@ -3,7 +3,9 @@ package savvycom.productservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import savvycom.productservice.domain.dto.CategoryDTO;
 import savvycom.productservice.domain.dto.ProductLineDTO;
+import savvycom.productservice.domain.dto.ProductOutput;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.service.product.IProductLineService;
@@ -43,7 +45,7 @@ public class ProductLineService implements IProductLineService {
     @Override
     public ProductLineDTO findDetailById(Long id) {
        ProductLine productLine = productLineRepository.findById(id).orElse(null);
-       if(productLine !=null){
+       if(productLine != null){
            return ProductLineDTO.builder()
                    .id(productLine.getId())
                    .name(productLine.getName())
@@ -65,6 +67,7 @@ public class ProductLineService implements IProductLineService {
 
         return productLineRepository.findByNameLike(name);
     }
+
 
 
 }

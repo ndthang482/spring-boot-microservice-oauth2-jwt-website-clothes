@@ -1,8 +1,7 @@
 package savvycom.productservice.service.product;
 
+import org.springframework.data.domain.PageImpl;
 import savvycom.productservice.domain.dto.ProductDTO;
-import savvycom.productservice.domain.dto.ProductResponse;
-import savvycom.productservice.domain.dto.ProductReviewResponse;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.dto.ProductOutput;
 
@@ -16,16 +15,25 @@ public interface IProductService {
 
     ProductOutput findProductOutputById(Long id);
 
-    ProductResponse findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findAllProductResponse(int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findByProductLineId(List<Long> productLineId, int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findByProductLineId(List<Long> productLineId, int pageNo, int pageSize, String sortBy, String sortDir);
 
-    ProductResponse findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
-           ,Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
+           , Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
 
-//    ProductReviewResponse findProductDTOByProductLineIds(List<Long> productLineIds, int pageNo, int pageSize, String sortBy, String sortDir);
     List<ProductDTO> findListProductDTOByProductLineId(Long productLineId);
 
+    PageImpl<?> findProductByColor(String color, int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findProductBySize(String size, int pageNo, int pageSize, String sortBy, String sortDir);
+
+    PageImpl<?> findProductByDiscountId(Long discountId, int pageNo, int pageSize, String sortBy, String sortDir);
+
+    PageImpl<?> findByColorAndSize(String color, String size, int pageNo, int pageSize, String sortBy, String sortDir);
+
+    PageImpl<?> findByPriceBetween(Long priceFrom, Long priceTo, int pageNo, int pageSize, String sortBy, String sortDir);
+
+    List<ProductOutput> findProductOutput(Long id);
 
 }
 

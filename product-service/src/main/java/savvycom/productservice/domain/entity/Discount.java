@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +29,8 @@ public class Discount {
 
     private Long active;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date modifiedAt;
+    private LocalDateTime modifiedAt;
 
 }

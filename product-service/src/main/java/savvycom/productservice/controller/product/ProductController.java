@@ -6,20 +6,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
-import savvycom.productservice.domain.dto.ProductResponse;
-import savvycom.productservice.domain.dto.ProductReviewResponse;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.domain.message.ResponseMessage;
-import savvycom.productservice.service.IReviewService;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 import savvycom.productservice.utils.AppConstants;
@@ -31,17 +28,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/product")
 public class ProductController extends BaseController {
-    @Autowired
-    private IProductService productService;
-    @Autowired
-    private IProductLineService productLineService;
-    @Autowired
-    private IReviewService reviewService;
-
-    @Autowired
-    public ProductController(IProductService ProductService) {
-        this.productService = ProductService;
-    }
+    private final IProductService productService;
+    private final IProductLineService productLineService;
 
     /**
      * Create new Product
@@ -107,25 +95,6 @@ public class ProductController extends BaseController {
         productService.save(product);
         return successResponse("Update completed");
     }
-    /**
-     * Find all ProductOutput by productLineId
-     * @Param Long id
-     * @return successResponse with List<ProductOutput>
-     */
-    @GetMapping("/line/{id}")
-    @Operation(summary = "Find product by productLine")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find Product by ProductLine completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findProductByProductLine(@PathVariable("id") Long id) {
-        return successResponse(productService.findProductByProductLine(id));
-    }
 
     /**
      * Find all productOutput by id
@@ -146,14 +115,13 @@ public class ProductController extends BaseController {
     public ResponseEntity<?> findProductOutputById(@PathVariable("id") Long id) {
         return successResponse(productService.findProductOutputById(id));
     }
-
     /**
-     * Find all ProductResponse
-     * @Param Long id
-     * @return successResponse with List<ProductOutput>
+     * Filter,search product, search category
+     * @Param categoryId, name, color, size, price, discountId
+     * @return successResponse with ProductResponse
      */
     @GetMapping("")
-    @Operation(summary = "Find all Product")
+    @Operation(summary = "Filter,search product")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Find all Product completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -163,97 +131,67 @@ public class ProductController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findAllProductResponse(
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        return successResponse(productService.findAllProductResponse(pageNo, pageSize, sortBy, sortDir));
-    }
-
-    /**
-     * Search ProductResponse by name in ProductLine
-     * @Param String name
-     * @return successResponse with ProductResponse
-     */
-    @GetMapping("/search")
-    @Operation(summary = "Search name Product By ProductLine")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Search name Product By ProductLine completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByNameLike(
-            @RequestParam String name,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        name = "%" + name + "%";
-        List<ProductLine> productLines = productLineService.findByNameLike(name);
-        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
-        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
-        return successResponse(productResponse);
-    }
-    /**
-     * Filter feature ProductResponse by feature in product
-     * @Param String name
-     * @return successResponse with ProductResponse
-     */
-    @GetMapping("/filter")
-    @Operation(summary = "Filter color, size, priceFrom, priceTo")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Filter color, size, priceFrom, priceTo completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByColorAndSizeAndPriceBetweenAndDiscountId(
-            @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_SIZE, required = false) String size,
-            @RequestParam(value = "color", defaultValue = AppConstants.DEFAULT_COLOR, required = false) String color,
-            @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
-            @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_TO, required = false) Long priceTo,
-            @RequestParam(value = "discountId", defaultValue = AppConstants.DEFAULT_DISCOUNT_ID, required = false) Long discountId,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        ProductResponse productResponse = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size, priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
-        return successResponse(productResponse);
-    }
-    /**
-     * Find all ProductResponse by categoryId from productLineId
-     * @Param String name
-     * @return successResponse with ProductResponse
-     */
-    @GetMapping("/category/{categoryId}")
-    @Operation(summary = "Find productLineId by categoryId")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Filter color, size, priceFrom, priceTo completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByCategoryId(
-    @PathVariable() Long categoryId,
+    public ResponseEntity<?> findByProductResponse(
+    @RequestParam(value = "categoryId", required = false) Long categoryId,
+    @RequestParam(value = "name", required = false) String name,
+    @RequestParam(value = "size", required = false) String size,
+    @RequestParam(value = "color", required = false) String color,
+    @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
+    @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceTo,
+    @RequestParam(value = "discountId", required = false) Long discountId,
     @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
     @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
     @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
     @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
     {
-        List<ProductLine> productLines = productLineService.findByCategoryId(categoryId);
-        List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
-        ProductResponse productResponse = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
-        return successResponse(productResponse);
+
+        if (categoryId == null && name == null && size == null && color == null && discountId == null) {
+            PageImpl<?> productResponse = productService.findAllProductResponse(pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse);
+        }
+         else if(categoryId != null && name == null && size == null && color == null && discountId == null) {
+            List<ProductLine> productLines1 = productLineService.findByCategoryId(categoryId);
+            List<Long> productLineIds1 = productLines1.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
+            PageImpl<?> productResponse1 = productService.findByProductLineId(productLineIds1, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse1);
+        }
+         else if(categoryId == null && name != null && size == null && color == null && discountId == null
+                && priceFrom == null && priceTo == null){
+            name = "%" + name + "%";
+            List<ProductLine> productLines = productLineService.findByNameLike(name);
+            List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
+            PageImpl<?> productResponse2 = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse2);
+        }
+         else if(categoryId == null && name == null && size != null && color != null && discountId != null){
+            PageImpl<?> productResponse3 = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size,
+                        priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse3);
+        }
+         else if(categoryId == null && name == null && size != null && color == null && discountId == null){
+            PageImpl<?> productResponse4 = productService.findProductBySize
+                    (size, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse4);
+        }
+         else if(categoryId == null && name == null && size == null && color != null  && discountId == null){
+            PageImpl<?> productResponse5 = productService.findProductByColor
+                    (color, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse5);
+        }
+         else if(categoryId == null && name == null && size == null && color == null && discountId != null) {
+            PageImpl<?> productResponse6 = productService.findProductByDiscountId
+                    (discountId, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse6);
+        }
+         else if(categoryId == null && name == null && size != null && color != null && discountId == null){
+            PageImpl<?> productResponse7 = productService.findByColorAndSize
+                    (color, size, pageNo, pageSize, sortBy, sortDir);
+            return successResponse(productResponse7);
+        }
+
+        else {
+            return successResponse("Bad Request");
+        }
     }
+
 }
