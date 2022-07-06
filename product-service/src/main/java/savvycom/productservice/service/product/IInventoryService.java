@@ -10,7 +10,7 @@ import java.util.List;
 public interface IInventoryService {
     Inventory save(Inventory Inventory);
 
-    Branch findById(Long id);
+    Inventory findById(Long id);
 
     Inventory updateInventory(Inventory inventory);
     Inventory findByBranchIdAndProductId(Long branchId, Long productId);

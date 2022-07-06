@@ -23,11 +23,6 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public void delete(Long id) {
-        imageRepository.deleteById(id);
-    }
-
-    @Override
     public Page<Image> findAll(Pageable pageable) {
         return imageRepository.findAll(pageable);
     }

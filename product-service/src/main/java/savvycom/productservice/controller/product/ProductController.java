@@ -116,7 +116,7 @@ public class ProductController extends BaseController {
         return successResponse(productService.findProductOutputById(id));
     }
     /**
-     * Filter,search product, search category
+     * Filter,search product, search category. product detail
      * @Param categoryId, name, color, size, price, discountId
      * @return successResponse with ProductResponse
      */
@@ -132,6 +132,7 @@ public class ProductController extends BaseController {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     public ResponseEntity<?> findByProduct(
+    @RequestParam(value = "detail", required = false) Long detail,
     @RequestParam(value = "categoryId", required = false) Long categoryId,
     @RequestParam(value = "name", required = false) String name,
     @RequestParam(value = "size", required = false) String size,
@@ -145,43 +146,46 @@ public class ProductController extends BaseController {
     @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
     {
 
-        if (categoryId == null && name == null && size == null && color == null && discountId == null) {
+        if (detail == null && categoryId == null && name == null && size == null && color == null && discountId == null) {
             PageImpl<?> productResponse = productService.findAllProductResponse(pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse);
         }
-         else if(categoryId != null && name == null && size == null && color == null && discountId == null) {
+         else if(detail != null && categoryId == null && name == null && size == null && color == null && discountId == null){
+            return successResponse(productLineService.findDetailById(detail));
+        }
+         else if(detail == null && categoryId != null && name == null && size == null && color == null && discountId == null) {
             List<ProductLine> productLines1 = productLineService.findByCategoryId(categoryId);
             List<Long> productLineIds1 = productLines1.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
             PageImpl<?> productResponse1 = productService.findByProductLineId(productLineIds1, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse1);
         }
-         else if(categoryId == null && name != null && size == null && color == null && discountId == null){
+         else if(detail == null && categoryId == null && name != null && size == null && color == null && discountId == null){
             name = "%" + name + "%";
             List<ProductLine> productLines = productLineService.findByNameLike(name);
             List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
             PageImpl<?> productResponse2 = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse2);
         }
-         else if(categoryId == null && name == null && size != null && color != null && discountId != null){
+         else if(detail == null && categoryId == null && name == null && size != null && color != null && discountId != null){
             PageImpl<?> productResponse3 = productService.findByColorAndSizeAndPriceBetweenAndDiscountId(color, size,
                         priceFrom, priceTo, discountId, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse3);
         }
-         else if(categoryId == null && name == null && size != null && color == null && discountId == null){
+         else if(detail == null && categoryId == null && name == null && size != null && color == null && discountId == null){
             PageImpl<?> productResponse4 = productService.findProductBySize(size, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse4);
         }
-         else if(categoryId == null && name == null && size == null && color != null  && discountId == null){
+         else if(detail == null && categoryId == null && name == null && size == null && color != null  && discountId == null){
             PageImpl<?> productResponse5 = productService.findProductByColor
                     (color, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse5);
         }
-         else if(categoryId == null && name == null && size == null && color == null && discountId != null) {
+         else if(detail == null && categoryId == null && name == null && size == null && color == null && discountId != null) {
             PageImpl<?> productResponse6 = productService.findProductByDiscountId
                     (discountId, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse6);
         }
-         else if(categoryId == null && name == null && size != null && color != null && discountId == null){
+         else if(detail == null && categoryId == null && name == null && size != null && color != null && discountId == null){
             PageImpl<?> productResponse7 = productService.findByColorAndSize
                     (color, size, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse7);

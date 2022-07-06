@@ -15,8 +15,6 @@ import java.util.List;
 public class BranchService implements IBranchService {
     private BranchRepository branchRepository;
 
-    private IInventoryService inventoryService;
-
     public BranchService(BranchRepository branchRepository) {
         this.branchRepository = branchRepository;
     }
@@ -24,11 +22,6 @@ public class BranchService implements IBranchService {
     @Override
     public Branch save(Branch branch) {
         return branchRepository.save(branch);
-    }
-
-    @Override
-    public void delete(Long id) {
-        branchRepository.deleteById(id);
     }
 
     @Override

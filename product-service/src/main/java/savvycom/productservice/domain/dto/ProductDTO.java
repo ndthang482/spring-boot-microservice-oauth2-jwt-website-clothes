@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import savvycom.productservice.domain.entity.Discount;
 import savvycom.productservice.domain.entity.Image;
 import savvycom.productservice.domain.entity.Review;
 import savvycom.productservice.domain.entity.product.Inventory;
@@ -34,7 +35,7 @@ public class ProductDTO {
 
     private List<Image> images;
 
-    private Long discountId;
+    private Discount discount;
 
     private List<Review> review;
 

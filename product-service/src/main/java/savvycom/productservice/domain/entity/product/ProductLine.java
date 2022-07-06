@@ -26,6 +26,8 @@ public class ProductLine {
 
     private Long categoryId;
 
+    private Long discountId;
+
     private Long active;
 
     private Date createdAt;

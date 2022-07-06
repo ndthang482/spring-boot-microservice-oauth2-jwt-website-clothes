@@ -82,7 +82,8 @@ public class InventoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id, @RequestBody Inventory inventory){
+    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id, @RequestBody Inventory inventory)
+    {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
     }

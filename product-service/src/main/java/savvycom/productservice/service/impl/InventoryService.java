@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class InventoryService implements IInventoryService {
     private InventoryRepository inventoryRepository;
-    private BranchRepository branchRepository;
-
     public InventoryService(InventoryRepository inventoryRepository) {
         this.inventoryRepository = inventoryRepository;
     }
@@ -28,13 +26,8 @@ public class InventoryService implements IInventoryService {
 
 
     @Override
-    public Branch findById(Long id) {
-        Inventory inventory = inventoryRepository.findById(id).orElse(null);
-        if(inventory.getQuantity() == 0){
-            return null;
-        }else{
-            return branchRepository.findById(id).orElse(null);
-        }
+    public Inventory findById(Long id) {
+        return inventoryRepository.findById(id).orElse(null);
     }
     @Override
     public Inventory updateInventory(Inventory inventory) {

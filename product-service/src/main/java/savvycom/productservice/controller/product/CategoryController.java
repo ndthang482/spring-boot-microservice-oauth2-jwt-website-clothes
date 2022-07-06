@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import savvycom.productservice.common.Const;
@@ -21,12 +20,9 @@ import savvycom.productservice.utils.AppConstants;
 @RequiredArgsConstructor
 @RequestMapping("/category")
 public class CategoryController extends BaseController {
+    @Autowired
     private ICategoryService categoryService;
 
-    @Autowired
-    public CategoryController(ICategoryService ProductCategoryService){
-        this.categoryService=ProductCategoryService;
-    }
     /**
      * Create new Product category
      * @return successResponse

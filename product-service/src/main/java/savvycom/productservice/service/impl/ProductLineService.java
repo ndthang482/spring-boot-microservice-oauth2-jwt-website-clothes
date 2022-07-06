@@ -3,16 +3,14 @@ package savvycom.productservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import savvycom.productservice.domain.dto.CategoryDTO;
 import savvycom.productservice.domain.dto.ProductLineDTO;
-import savvycom.productservice.domain.dto.ProductOutput;
+import savvycom.productservice.domain.entity.Discount;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.repository.product.ProductLineRepository;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,11 +22,6 @@ public class ProductLineService implements IProductLineService {
     @Override
     public ProductLine save(ProductLine productLine) {
         return productLineRepository.save(productLine);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        productLineRepository.deleteById(id);
     }
 
     @Override

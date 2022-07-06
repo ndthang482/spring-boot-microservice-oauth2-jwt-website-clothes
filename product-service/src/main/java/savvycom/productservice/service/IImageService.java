@@ -9,8 +9,6 @@ import java.util.List;
 public interface IImageService {
     Image save(Image image);
 
-    void delete(Long id);
-
     Page<Image> findAll(Pageable pageable);
 
     Image findById(Long id);

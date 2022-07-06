@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.*;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.repository.product.ProductRepository;
+import savvycom.productservice.service.IDiscountService;
 import savvycom.productservice.service.IImageService;
 import savvycom.productservice.service.IReviewService;
 import savvycom.productservice.service.product.IInventoryService;
@@ -29,6 +30,8 @@ public class ProductService implements IProductService {
     private IProductLineService productLineService;
     @Autowired
     private IInventoryService inventoryService;
+    @Autowired
+    IDiscountService discountService;
     public ProductService(ProductRepository productRepository, IImageService imageService) {
         this.productRepository = productRepository;
         this.imageService = imageService;
@@ -55,7 +58,7 @@ public class ProductService implements IProductService {
                 .size(product.getSize())
                 .productLine(productLineService.findById(product.getProductLineId()))
                 .price(product.getPrice())
-                .discountId(product.getDiscountId())
+                .discount(discountService.findById(product.getDiscountId()))
                 .active(product.getActive())
                 .images(imageService.findByProductId(product.getProductLineId()))
                 .createdAt(LocalDateTime.now())
@@ -71,7 +74,7 @@ public class ProductService implements IProductService {
         productOutput.setProductLine(productLineService.findById(product.getProductLineId()));
         productOutput.setPrice(product.getPrice());
         productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
-        productOutput.setDiscountId(product.getDiscountId());
+        productOutput.setDiscount(discountService.findById(product.getDiscountId()));
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
         productOutput.setModifiedAt(LocalDateTime.now());
@@ -84,9 +87,9 @@ public class ProductService implements IProductService {
         productOutput.setSize(product.getSize());
         productOutput.setProductLine(productLineService.findById(product.getId()));
         productOutput.setPrice(product.getPrice());
-        productOutput.setImages(imageService.findByProductId(product.getId()));
+        productOutput.setImages(imageService.findByProductId(product.getProductLineId()));
         productOutput.setInventories(inventoryService.findByProductId(product.getId()));
-        productOutput.setDiscountId(product.getDiscountId());
+        productOutput.setDiscount(discountService.findById(product.getDiscountId()));
         productOutput.setActive(product.getActive());
         productOutput.setCreatedAt(LocalDateTime.now());
         productOutput.setModifiedAt(LocalDateTime.now());
@@ -100,9 +103,10 @@ public class ProductService implements IProductService {
         productDTO.setSize(product.getSize());
         productDTO.setImages(imageService.findByProductId(product.getId()));
         productDTO.setPrice(product.getPrice());
-        productDTO.setDiscountId(product.getDiscountId());
-        productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
+        productDTO.setDiscount(discountService.findById(product.getDiscountId()));
         productDTO.setInventories(inventoryService.findByProductId(product.getProductLineId()));
+        productDTO.setDiscount(discountService.findById(product.getDiscountId()));
+        productDTO.setReview(reviewService.findReviewByProductId(product.getId()));
         productDTO.setActive(product.getActive());
         productDTO.setCreatedAt(LocalDateTime.now());
         productDTO.setModifiedAt(LocalDateTime.now());
