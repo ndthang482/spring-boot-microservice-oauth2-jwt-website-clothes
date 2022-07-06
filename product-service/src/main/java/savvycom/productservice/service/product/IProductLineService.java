@@ -13,7 +13,7 @@ public interface IProductLineService {
 
    ProductLine findById(Long id);
 
-   ProductLineDTO findDetailById(Long id);
+   ProductLineDTO findProductLineDTOById(Long id);
 
     List<ProductLine> findByCategoryId(Long categoryId);
 

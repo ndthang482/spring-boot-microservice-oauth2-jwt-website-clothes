@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/inventory")
 public class InventoryController extends BaseController {
+    @Autowired
     private IInventoryService inventoryService;
     @Autowired
     public InventoryController(IInventoryService InventoryService) {
@@ -87,23 +88,14 @@ public class InventoryController extends BaseController {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
     }
-    /**
-     * Find branch, if quantity = 0
-     * @return successResponse
-     */
-    @GetMapping("{id}")
-    @Operation(summary = "Find branch by id, if quantity = 0")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product inventory completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findInventoryByQuantity(@PathVariable("id") Long id)
+    @GetMapping("/{id}")
+    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id)
     {
         return successResponse(inventoryService.findById(id));
+    }
+    @GetMapping("/output/{productId}")
+    public ResponseEntity<?> findInventoryOutputByProductId(@PathVariable("productId") Long productId)
+    {
+        return successResponse(inventoryService.findInventoryOutputByProductId(productId));
     }
 }

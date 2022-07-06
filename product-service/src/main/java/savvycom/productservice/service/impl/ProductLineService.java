@@ -36,7 +36,7 @@ public class ProductLineService implements IProductLineService {
     }
 
     @Override
-    public ProductLineDTO findDetailById(Long id) {
+    public ProductLineDTO findProductLineDTOById(Long id) {
        ProductLine productLine = productLineRepository.findById(id).orElse(null);
        if(productLine != null){
            return ProductLineDTO.builder()

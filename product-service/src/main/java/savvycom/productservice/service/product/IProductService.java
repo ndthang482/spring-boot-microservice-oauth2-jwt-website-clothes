@@ -17,18 +17,21 @@ public interface IProductService {
 
     PageImpl<?> findByProductLineId(List<Long> productLineId, int pageNo, int pageSize, String sortBy, String sortDir);
 
-    PageImpl<?> findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
-           , Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
-
     List<ProductDTO> findListProductDTOByProductLineId(Long productLineId);
-
-    PageImpl<?> findProductByColor(String color, int pageNo, int pageSize, String sortBy, String sortDir);
-    PageImpl<?> findProductBySize(String size, int pageNo, int pageSize, String sortBy, String sortDir);
-
-    PageImpl<?> findProductByDiscountId(Long discountId, int pageNo, int pageSize, String sortBy, String sortDir);
-
-    PageImpl<?> findByColorAndSize(String color, String size, int pageNo, int pageSize, String sortBy, String sortDir);
-
+    PageImpl<?> findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size, Long priceFrom, Long priceTo
+            , Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findProductByColorAndPriceBetween(String color,Long priceFrom, Long priceTo
+             , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findProductBySizeAndPriceBetween(String size,Long priceFrom, Long priceTo
+            , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findProductByDiscountIdAndPriceBetween(Long discountId
+            , Long priceFrom, Long priceTo, int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findByColorAndSizeAndPriceBetween(String color, String size, Long priceFrom, Long priceTo
+            , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findByColorAndDiscountIdAndPriceBetween(String color
+            , Long priceFrom, Long priceTo, Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
+    PageImpl<?> findBySizeAndDiscountIdAndPriceBetween(String size,
+           Long priceFrom, Long priceTo , Long discountId , int pageNo, int pageSize, String sortBy, String sortDir);
     List<ProductOutput> findProductOutput(Long id);
 
 }

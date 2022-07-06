@@ -28,12 +28,4 @@ public class ControllerExceptionHandler extends BaseController {
                 null);
     }
 
-    @ExceptionHandler({ Exception.class })
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<?> handleException(Exception e) {
-        return failedResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value() + "",
-                e.getMessage(),
-                null);
-    }
 }

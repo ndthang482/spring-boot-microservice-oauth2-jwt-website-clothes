@@ -1,12 +1,13 @@
 package savvycom.productservice.service.impl;
 //@Service hold the business handling code in it
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.InventoryDTO;
-import savvycom.productservice.domain.entity.Branch;
+import savvycom.productservice.domain.dto.InventoryOutput;
 import savvycom.productservice.domain.entity.product.Inventory;
-import savvycom.productservice.repository.BranchRepository;
 import savvycom.productservice.repository.product.InventoryRepository;
+import savvycom.productservice.service.IBranchService;
 import savvycom.productservice.service.product.IInventoryService;
 
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class InventoryService implements IInventoryService {
+    @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private IBranchService branchService;
     public InventoryService(InventoryRepository inventoryRepository) {
         this.inventoryRepository = inventoryRepository;
     }
@@ -62,5 +67,17 @@ public class InventoryService implements IInventoryService {
         return inventoryRepository.findAll();
     }
 
+    @Override
+    public List<Inventory> findByBranchId(Long branchId) {
+        return inventoryRepository.findByBranchId(branchId);
+    }
 
+    @Override
+    public List<InventoryOutput> findInventoryOutputByProductId(Long productId) {
+        List<Inventory> listInventory = inventoryRepository.findByProductId(productId);
+        return listInventory.stream().map(inventory -> InventoryOutput.builder()
+                .branch(branchService.findById(inventory.getBranchId()))
+                .quantity(inventory.getQuantity())
+                .build()).collect(Collectors.toList());
+    }
 }

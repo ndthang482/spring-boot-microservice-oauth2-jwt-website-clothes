@@ -1,8 +1,7 @@
 package savvycom.productservice.service.product;
 
 import savvycom.productservice.domain.dto.InventoryDTO;
-import savvycom.productservice.domain.dto.ProductQuantityDTO;
-import savvycom.productservice.domain.entity.Branch;
+import savvycom.productservice.domain.dto.InventoryOutput;
 import savvycom.productservice.domain.entity.product.Inventory;
 
 import java.util.List;
@@ -19,4 +18,9 @@ public interface IInventoryService {
     List<Inventory> findByProductId(Long productId);
 
     List<Inventory> findAll();
+
+    List<Inventory> findByBranchId(Long branchId);
+
+    List<InventoryOutput> findInventoryOutputByProductId(Long productId);
+
 }

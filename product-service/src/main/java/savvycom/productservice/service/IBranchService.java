@@ -1,6 +1,5 @@
 package savvycom.productservice.service;
 
-import savvycom.productservice.domain.dto.ProductQuantityDTO;
 import savvycom.productservice.domain.entity.Branch;
 
 import java.util.List;
@@ -11,4 +10,5 @@ public interface IBranchService {
     List<Branch> findAll();
 
     Branch findById(Long id);
+
 }

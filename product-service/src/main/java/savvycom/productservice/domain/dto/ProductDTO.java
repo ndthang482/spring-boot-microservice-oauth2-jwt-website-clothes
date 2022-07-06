@@ -29,8 +29,6 @@ public class ProductDTO {
 
     private String size;
 
-    private ProductLine productLine;
-
     private Long price;
 
     private List<Image> images;
@@ -39,7 +37,7 @@ public class ProductDTO {
 
     private List<Review> review;
 
-    private List<Inventory> inventories;
+    private List<InventoryOutput> inventories;
 
     private Long active;
 

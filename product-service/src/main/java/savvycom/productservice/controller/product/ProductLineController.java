@@ -80,6 +80,6 @@ public class ProductLineController extends BaseController {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     public ResponseEntity<?> findDetailById(@PathVariable Long id) {
-        return successResponse(productLineService.findDetailById(id));
+        return successResponse(productLineService.findById(id));
     }
 }

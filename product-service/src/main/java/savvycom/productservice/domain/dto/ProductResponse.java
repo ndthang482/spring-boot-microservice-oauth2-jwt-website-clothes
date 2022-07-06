@@ -1,13 +1,11 @@
 package savvycom.productservice.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import savvycom.productservice.domain.entity.Discount;
 import savvycom.productservice.domain.entity.Image;
-import savvycom.productservice.domain.entity.product.Inventory;
 import savvycom.productservice.domain.entity.product.ProductLine;
 
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductOutput {
+public class ProductResponse {
     private Long id;
 
     private String color;
@@ -31,8 +29,6 @@ public class ProductOutput {
     private List<Image> images;
 
     private Discount discount;
-
-    private List<InventoryOutput> inventories;
 
     private Long active;
 

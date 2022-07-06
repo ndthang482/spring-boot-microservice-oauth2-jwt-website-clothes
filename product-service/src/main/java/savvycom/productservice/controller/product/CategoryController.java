@@ -67,7 +67,7 @@ public class CategoryController extends BaseController {
      * @return successResponse
      */
     @GetMapping("")
-    @Operation(summary = "Find all product category")
+    @Operation(summary = "Find all product by category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
