@@ -33,9 +33,9 @@ public class InventoryController extends BaseController {
      * Create new product inventory
      * @return successResponse
      */
-    @PostMapping("{id}")
+    @PostMapping("")
     @PreAuthorize("hasAuthority('admin')")
-    @Operation(summary = "Create inventory")
+    @Operation(summary = "Create new inventory")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product inventory completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -53,7 +53,7 @@ public class InventoryController extends BaseController {
      * @return successResponse
      */
     @PostMapping("/quantity")
-    @Operation(summary = "Find quantity while user order")
+    @Operation(summary = "Update quantity, user order")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update quantity while order completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -87,15 +87,5 @@ public class InventoryController extends BaseController {
     {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id)
-    {
-        return successResponse(inventoryService.findById(id));
-    }
-    @GetMapping("/output/{productId}")
-    public ResponseEntity<?> findInventoryOutputByProductId(@PathVariable("productId") Long productId)
-    {
-        return successResponse(inventoryService.findInventoryOutputByProductId(productId));
     }
 }

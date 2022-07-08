@@ -2,17 +2,16 @@ package savvycom.productservice.domain.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.Timestamp;
-import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@Builder
 @Table(name="image")
 @Entity
 public class Image {
@@ -23,8 +22,10 @@ public class Image {
 
     private Long productId;
 
+    @Column(columnDefinition = "text")
     private String url;
 
+    @Column(name = "description")
     private String desc;
 
 }

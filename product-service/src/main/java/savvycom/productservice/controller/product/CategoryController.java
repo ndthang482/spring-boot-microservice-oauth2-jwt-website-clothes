@@ -39,14 +39,15 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> newCategory(@RequestBody Category category){
+    public ResponseEntity<?> newCategory(@RequestBody Category category)
+    {
         return successResponse(categoryService.save(category));
     }
     /**
      * Update new Product category
      * @return successResponse
      */
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Update product category by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
@@ -58,7 +59,8 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateCategory(@RequestBody Category category){
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category){
+        category.setId(id);
         return successResponse(categoryService.save(category));
     }
     /**
@@ -67,7 +69,7 @@ public class CategoryController extends BaseController {
      * @return successResponse
      */
     @GetMapping("")
-    @Operation(summary = "Find all product by category")
+    @Operation(summary = "Find all category")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
@@ -77,13 +79,23 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByCategory(
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
+    public ResponseEntity<?> findALlCategory()
     {
-        return successResponse(categoryService.findByCategory(pageNo, pageSize , sortBy, sortDir));
+        return successResponse(categoryService.findByAll());
     }
-
+    @GetMapping("{id}")
+    @Operation(summary = "Find category by id")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    public ResponseEntity<?> findByCategoryId(@PathVariable Long id)
+    {
+        return successResponse(categoryService.findById(id));
+    }
 }

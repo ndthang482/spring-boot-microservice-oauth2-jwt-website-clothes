@@ -2,6 +2,7 @@ package savvycom.productservice.domain.entity.product;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@Builder
 @Entity
 @Table(name="product_line")
 public class ProductLine {
@@ -23,11 +24,10 @@ public class ProductLine {
 
     private String name;
 
+    @Column(name = "description")
     private String desc;
 
     private Long categoryId;
-
-    private Long discountId;
 
     private Long active;
 

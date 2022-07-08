@@ -75,7 +75,9 @@ public class InventoryService implements IInventoryService {
     @Override
     public List<InventoryOutput> findInventoryOutputByProductId(Long productId) {
         List<Inventory> listInventory = inventoryRepository.findByProductId(productId);
-        return listInventory.stream().map(inventory -> InventoryOutput.builder()
+        return listInventory
+                .stream()
+                .map(inventory -> InventoryOutput.builder()
                 .branch(branchService.findById(inventory.getBranchId()))
                 .quantity(inventory.getQuantity())
                 .build()).collect(Collectors.toList());

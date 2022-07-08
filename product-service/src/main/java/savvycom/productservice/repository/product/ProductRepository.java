@@ -19,22 +19,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByProductLineIdIn(List<Long> productLineId, Pageable pageable);
 
-    Page<Product> findByColorAndSizeAndPriceBetweenAndDiscountId(String color, String size,
-    Long priceFrom, Long priceTo,Long discountId, Pageable pageable);
-
     List<Product> findByProductLineId(Long productLineId);
-
-    Page<Product> findProductByColorAndPriceBetween(String color, Long priceFrom, Long priceTo, Pageable pageable);
-
-    Page<Product> findProductBySizeAndPriceBetween(String size, Long priceFrom, Long priceTo, Pageable pageable);
-
-    Page<Product> findProductByDiscountIdAndPriceBetween(Long discountId, Long priceFrom, Long priceTo, Pageable pageable);
 
     Page<Product> findByColorAndSizeAndPriceBetween(String color, String size, Long priceFrom, Long priceTo, Pageable pageable);
 
-    Page<Product> findByColorAndDiscountIdAndPriceBetween(String color, Long priceFrom, Long priceTo, Long discountId, Pageable pageable);
+    Page<Product> findByColorAndPriceBetween(String color, Long priceFrom, Long priceTo, Pageable pageable);
 
-    Page<Product> findBySizeAndDiscountIdAndPriceBetween(String size, Long priceFrom, Long priceTo, Long discountId, Pageable pageable);
+    Page<Product> findBySizeAndPriceBetween(String size, Long priceFrom, Long priceTo, Pageable pageable);
 
-
+    Page<Product> findByPriceBetween(Long priceFrom, Long priceTo, Pageable pageable);
 }

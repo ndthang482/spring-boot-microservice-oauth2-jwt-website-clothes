@@ -1,5 +1,5 @@
 package savvycom.productservice.domain.dto;
-
+// find product detail
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -32,8 +32,6 @@ public class ProductDTO {
     private Long price;
 
     private List<Image> images;
-
-    private Discount discount;
 
     private List<Review> review;
 

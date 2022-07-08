@@ -28,8 +28,6 @@ public class ProductResponse {
 
     private List<Image> images;
 
-    private Discount discount;
-
     private Long active;
 
     private LocalDateTime createdAt;

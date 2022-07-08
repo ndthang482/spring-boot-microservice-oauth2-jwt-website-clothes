@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import savvycom.productservice.domain.entity.Discount;
 import savvycom.productservice.domain.entity.Image;
+import savvycom.productservice.domain.entity.product.Category;
 import savvycom.productservice.domain.entity.product.Inventory;
 import savvycom.productservice.domain.entity.product.ProductLine;
 
@@ -18,6 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductOutput {
+
+    private Category category;
+
     private Long id;
 
     private String color;
@@ -29,8 +33,6 @@ public class ProductOutput {
     private Long price;
 
     private List<Image> images;
-
-    private Discount discount;
 
     private List<InventoryOutput> inventories;
 

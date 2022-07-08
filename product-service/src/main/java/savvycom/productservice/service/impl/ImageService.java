@@ -36,5 +36,4 @@ public class ImageService implements IImageService {
     public List<Image> findByProductId(Long productId) {
         return imageRepository.findByProductId(productId);
     }
-
 }

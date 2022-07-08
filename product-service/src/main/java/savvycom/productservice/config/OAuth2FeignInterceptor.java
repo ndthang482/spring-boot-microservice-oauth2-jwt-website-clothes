@@ -25,4 +25,5 @@ public class OAuth2FeignInterceptor implements RequestInterceptor {
             requestTemplate.header(AUTHORIZATION_HEADER, String.format("%s %s", TOKEN_TYPE, details.getTokenValue()));
         }
     }
+
 }

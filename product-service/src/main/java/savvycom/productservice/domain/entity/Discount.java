@@ -23,6 +23,7 @@ public class Discount {
 
     private String name;
 
+    @Column(name = "description")
     private String desc;
 
     private String discountPercent;
