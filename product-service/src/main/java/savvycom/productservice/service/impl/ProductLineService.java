@@ -14,10 +14,9 @@ import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.exception.ProductNotFoundException;
 import savvycom.productservice.repository.BranchRepository;
 import savvycom.productservice.repository.ImageRepository;
-import savvycom.productservice.repository.product.InventoryRepository;
-import savvycom.productservice.repository.product.ProductLineRepository;
-import savvycom.productservice.repository.product.ProductRepository;
-import savvycom.productservice.service.IBranchService;
+import savvycom.productservice.service.product.InventoryRepository;
+import savvycom.productservice.service.product.ProductLineRepository;
+import savvycom.productservice.service.product.ProductRepository;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
 

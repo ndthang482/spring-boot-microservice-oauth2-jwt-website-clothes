@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.InventoryDTO;
 import savvycom.productservice.domain.dto.InventoryOutput;
 import savvycom.productservice.domain.entity.product.Inventory;
-import savvycom.productservice.repository.product.InventoryRepository;
+import savvycom.productservice.service.product.InventoryRepository;
 import savvycom.productservice.service.IBranchService;
 import savvycom.productservice.service.product.IInventoryService;
 

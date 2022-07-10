@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import savvycom.productservice.common.Const;
 import savvycom.productservice.controller.BaseController;
+import savvycom.productservice.domain.dto.ProductResponse;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.domain.message.ResponseMessage;
@@ -193,7 +194,7 @@ public class ProductController extends BaseController {
         }
         else
         {
-            return successResponse("Bad Request");
+            return successResponse(new ProductResponse());
         }
     }
 

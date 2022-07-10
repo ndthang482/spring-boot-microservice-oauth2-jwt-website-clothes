@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.*;
 import savvycom.productservice.domain.entity.product.Product;
 import savvycom.productservice.domain.entity.product.ProductLine;
-import savvycom.productservice.repository.product.ProductRepository;
-import savvycom.productservice.service.IDiscountService;
+import savvycom.productservice.service.product.ProductRepository;
 import savvycom.productservice.service.IImageService;
 import savvycom.productservice.service.IReviewService;
 import savvycom.productservice.service.product.ICategoryService;
@@ -194,7 +193,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public PageImpl<?>  findAllProductOutput(int pageNo, int pageSize, String sortBy, String sortDir)
+    public PageImpl<?> findAllProductOutput(int pageNo, int pageSize, String sortBy, String sortDir)
     {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -208,6 +207,5 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
         return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
     }
-
 
 }

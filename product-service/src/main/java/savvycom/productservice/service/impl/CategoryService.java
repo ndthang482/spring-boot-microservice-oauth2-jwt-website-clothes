@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import savvycom.productservice.domain.dto.CategoryOutput;
 import savvycom.productservice.domain.entity.product.Category;
-import savvycom.productservice.repository.product.CategoryRepository;
+import savvycom.productservice.service.product.CategoryRepository;
 import savvycom.productservice.service.product.ICategoryService;
 
 

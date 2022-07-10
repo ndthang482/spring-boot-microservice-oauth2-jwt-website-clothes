@@ -1,31 +1,50 @@
+#service:
+#  hostname:
+#    discovery: 192.168.196.207
+#    auth: 192.168.196.207
+#    user: 192.168.196.207
+#    order: 192.168.196.140
+#    product: 192.168.196.106
+#
+
 spring:
   application:
-    name: auth-service
-  jpa:
-    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddlAuto: update
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:shop_iphone}?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-    username: root
-    password: admin
-server:
-  port: 3001
+    name: gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+        - id: auth-service
+          uri:
+            http://localhost:8800/
+          predicates:
+            - Path=/oauth/**, /auth/**
+        - id: user-service
+          uri:
+            http://localhost:8880/
+          predicates:
+            - Path=/user/**
+        - id: product-service
+          uri:
+            http://localhost:8000/
+          predicates:
+            - Path=/product/**, /line/**, /branch/**, /inventory/**, /discount/**, /review/**, /category/**
+        - id: order-service
+          uri:
+            http://localhost:8080/
+          predicates:
+            - Path=/order/**, /cart/**
 
+server:
+  port: 8762
 eureka:
   client:
-  serviceUrl:
-    defaultZone: http://localhost:8888/eureka/
-
-security:
-  oauth2:
-    client:
-      clientId: client
-      clientSecret: client@2022
-      accessTokenValiditySeconds: 18000
-      refreshTokenValiditySeconds: 18000
-encrypt:
-  keyStore:
-    alias: jwt
-    password: god@123
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
