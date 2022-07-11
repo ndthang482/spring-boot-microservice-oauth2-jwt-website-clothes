@@ -76,7 +76,6 @@ public class CartController extends BaseController {
         cartService.update(cart);
         return successResponse("Update cart successfully!");
     }
-
     /**
      * Delete cart by cart id
      *

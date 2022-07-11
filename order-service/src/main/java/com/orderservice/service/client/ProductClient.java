@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "product-service", url = "http://192.168.196.106:8000")
+@FeignClient(name = "product-service", url = "http://localhost:8000")
 public interface ProductClient {
     @GetMapping("/product/{id}")
     Message<Product> findByProductId(@PathVariable Long id);

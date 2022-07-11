@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "user-service", url = "http://192.168.196.207:8901")
+@FeignClient(name = "user-service", url = "http://localhost:8880")
 public interface UserClient {
     @GetMapping("user/{id}")
     Message<User> findByUserId(@PathVariable Long id);

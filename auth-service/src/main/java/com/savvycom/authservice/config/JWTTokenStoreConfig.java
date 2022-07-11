@@ -19,6 +19,7 @@ public class JWTTokenStoreConfig {
      * Signing our access token by asymmetric keypair from keystore file
      * @return JwtAccessTokenConverter
      */
+
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
