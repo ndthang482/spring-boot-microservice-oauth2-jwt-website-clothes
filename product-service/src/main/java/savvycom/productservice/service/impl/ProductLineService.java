@@ -161,26 +161,57 @@ public class ProductLineService implements IProductLineService {
         if (Objects.nonNull(updateProductDTO.getPrice())) products.setPrice(updateProductDTO.getPrice());
         products = productRepository.save(products);
 
-        List<Image> imageList = new ArrayList<>();
-        for (int i = 0; i < updateProductDTO.getImages().size(); i++) {
-            List<Image> images = new ArrayList<>();
-            List<String> imageUrls = updateProductDTO.getImages();
-            for (String imageUrl : imageUrls) {
-                Image image = Image.builder()
-                        .productId(products.getId())
-                        .url(imageUrl)
-                        .desc(productLine.getDesc())
-                        .build();
-                images.add(image);
-            }
-            imageList.addAll(images);
-        }
-        imageRepository.saveAll(imageList);
+        Image images = imageRepository.findById(updateProductDTO.getProductId()).orElseThrow(() ->
+                new ProductNotFoundException("Not found any product with id " + updateProductDTO.getProductId()));
+        if (Objects.nonNull(updateProductDTO.getProductId())) images.setId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getUrl())) images.setUrl(updateProductDTO.getUrl());
+        if (Objects.nonNull(updateProductDTO.getProductId())) images.setProductId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getDesc())) images.setDesc(updateProductDTO.getDesc());
+        images = imageRepository.save(images);
 
         Inventory inventory = inventoryRepository.findById(updateProductDTO.getProductId()).orElseThrow(() ->
                 new ProductNotFoundException("Not found any inventory with id " + updateProductDTO.getProductId()));
         if (Objects.nonNull(updateProductDTO.getProductId())) inventory.setProductId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getQuantity())) inventory.setQuantity(updateProductDTO.getQuantity());
+        inventory = inventoryRepository.save(inventory);
+    }
 
+    @Override
+    public void deleteProductDTO(UpdateProductDTO updateProductDTO) {
+        ProductLine productLine = productLineRepository.findById(updateProductDTO.getProductLineId()).orElseThrow(() ->
+                new ProductNotFoundException("Not found any productLine with id " + updateProductDTO.getProductLineId()));
+        if (Objects.nonNull(updateProductDTO.getProductLineId()))
+            productLine.setId(updateProductDTO.getProductLineId());
+        if (Objects.nonNull(updateProductDTO.getName())) productLine.setName(updateProductDTO.getName());
+        if (Objects.nonNull(updateProductDTO.getCategoryId()))
+            productLine.setCategoryId(updateProductDTO.getCategoryId());
+
+        productLine = productLineRepository.save(productLine);
+
+        Product products = productRepository.findById(updateProductDTO.getProductId()).orElseThrow(() ->
+                new ProductNotFoundException("Not found any product with id " + updateProductDTO.getProductId()));
+        if (Objects.nonNull(updateProductDTO.getProductId())) products.setId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getColor())) products.setColor(updateProductDTO.getColor());
+        if (Objects.nonNull(updateProductDTO.getSize())) products.setSize(updateProductDTO.getSize());
+        if (Objects.nonNull(updateProductDTO.getPrice())) products.setPrice(updateProductDTO.getPrice());
+        if(products.getActive()!=null){
+            products.setActive(0L);
+            productRepository.save(products);
+        }
+        products = productRepository.save(products);
+
+        Image images = imageRepository.findById(updateProductDTO.getProductId()).orElseThrow(() ->
+                new ProductNotFoundException("Not found any product with id " + updateProductDTO.getProductId()));
+        if (Objects.nonNull(updateProductDTO.getProductId())) images.setId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getUrl())) images.setUrl(updateProductDTO.getUrl());
+        if (Objects.nonNull(updateProductDTO.getProductId())) images.setProductId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getDesc())) images.setDesc(updateProductDTO.getDesc());
+        images = imageRepository.save(images);
+
+        Inventory inventory = inventoryRepository.findById(updateProductDTO.getProductId()).orElseThrow(() ->
+                new ProductNotFoundException("Not found any inventory with id " + updateProductDTO.getProductId()));
+        if (Objects.nonNull(updateProductDTO.getProductId())) inventory.setProductId(updateProductDTO.getProductId());
+        if (Objects.nonNull(updateProductDTO.getQuantity())) inventory.setQuantity(updateProductDTO.getQuantity());
         inventory = inventoryRepository.save(inventory);
     }
 }

@@ -25,26 +25,6 @@ public class ProductLineController extends BaseController {
     private final IProductLineService productLineService;
 
     /**
-     * Update productLine
-     * @return successResponse
-     */
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
-    @Operation(summary = "Update productLine")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update product_Line completed",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateProductLine(@PathVariable("id") Long id, @RequestBody ProductLine productLine){
-        productLine.setId(id);
-        return successResponse(productLineService.save(productLine));
-    }
-    /**
      * Find product detail
      * @return successResponse
      */
@@ -69,7 +49,7 @@ public class ProductLineController extends BaseController {
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create new ProductDTO")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product_Line completed",
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create new productDTO completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -78,13 +58,18 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public void createProductDTO(@RequestBody CreateProductDTO createProductDTO){
+    public ResponseEntity<?> createProductDTO(@RequestBody CreateProductDTO createProductDTO){
         productLineService.createProductDTO(createProductDTO);
+        return successResponse("Create new ProductDTO successfully");
     }
-    @PutMapping("{updateProductDTO}")
+    /**
+     * Update productDTO
+     * @return successResponse
+     */
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
-    @Operation(summary = "Create new ProductDTO")
-    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Create product_Line completed",
+    @Operation(summary = "Update ProductDTO")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update productDTO completed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
@@ -93,16 +78,26 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public void updateProductDTO(@RequestBody UpdateProductDTO updateProductDTO){
-        updateProductDTO.setProductLineId(updateProductDTO.getProductLineId());
-        updateProductDTO.setName(updateProductDTO.getName());
-        updateProductDTO.setDesc(updateProductDTO.getDesc());
-        updateProductDTO.setProductId(updateProductDTO.getProductId());
-        updateProductDTO.setColor(updateProductDTO.getColor());
-        updateProductDTO.setSize(updateProductDTO.getSize());
-        updateProductDTO.setImages(updateProductDTO.getImages());
-        updateProductDTO.setPrice(updateProductDTO.getPrice());
-        updateProductDTO.setQuantity(updateProductDTO.getQuantity());
+    public ResponseEntity<?> updateProductDTO(@PathVariable Long id, @RequestBody UpdateProductDTO updateProductDTO){
+        updateProductDTO.setProductLineId(id);
         productLineService.updateProductDTO(updateProductDTO);
+        return successResponse("Update ProductDTO successfully");
+    }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
+    @Operation(summary = "Delete ProductDTO")
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Delete productDTO completed",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseMessage.class))})
+    public ResponseEntity<?> deleteProductDTO(@PathVariable Long id, @RequestBody UpdateProductDTO updateProductDTO){
+        updateProductDTO.setProductLineId(id);
+        productLineService.deleteProductDTO(updateProductDTO);
+        return successResponse("Delete ProductDTO successfully");
     }
 }

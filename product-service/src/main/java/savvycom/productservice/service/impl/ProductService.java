@@ -37,7 +37,6 @@ public class ProductService implements IProductService {
         this.productRepository = productRepository;
         this.imageService = imageService;
     }
-
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
@@ -92,7 +91,7 @@ public class ProductService implements IProductService {
         productResponse.setId(product.getId());
         productResponse.setColor(product.getColor());
         productResponse.setSize(product.getSize());
-        productResponse.setProductLine(productLineService.findById(product.getProductLineId()));
+        productResponse.setProductLine(productLineService.findById(product.getId()));
         productResponse.setPrice(product.getPrice());
         productResponse.setImages(imageService.findByProductId(product.getId()));
         productResponse.setActive(product.getActive());
@@ -141,7 +140,6 @@ public class ProductService implements IProductService {
                 mapToDTONoProductLine(product))
                 .collect(Collectors.toList());
     }
-
     @Override
     public PageImpl<?>findByColorAndSizeAndPriceBetween(String color, String size, Long priceFrom, Long priceTo,
              int pageNo, int pageSize, String sortBy, String sortDir)
@@ -174,7 +172,6 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
         return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
     }
-
     @Override
     public PageImpl<?> findBySizeAndPriceBetween(String size
             ,Long priceFrom, Long priceTo, int pageNo, int pageSize, String sortBy, String sortDir)
@@ -207,5 +204,4 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
         return new PageImpl<>(content, PageRequest.of(pageNo, pageSize, sort), products.getTotalElements());
     }
-
 }

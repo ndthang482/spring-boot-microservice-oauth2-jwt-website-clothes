@@ -22,24 +22,35 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDTO {
+    @Schema(description = "Product by id")
     private Long id;
 
+    @Schema(description = "Product by color")
     private String color;
 
+    @Schema(description = "Product by size")
     private String size;
 
+    @Schema(description = "Product by price")
     private Long price;
 
+    @Schema(description = "List image by productId")
     private List<Image> images;
 
+    @Schema(description = "List review by productId")
     private List<Review> review;
 
+    @Schema(description = "List inventory by productId")
     private List<InventoryOutput> inventories;
 
+    @Schema(description = "Product by active")
     private Long active;
 
+    @Schema(description = "Created time")
     private LocalDateTime createdAt;
 
+    @Schema(description = "Modified time")
     private LocalDateTime modifiedAt;
 }

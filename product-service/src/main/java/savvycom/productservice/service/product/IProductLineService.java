@@ -25,4 +25,6 @@ public interface IProductLineService {
     void createProductDTO(CreateProductDTO createProductDTO);
 
     void updateProductDTO(UpdateProductDTO updateProductDTO);
+
+    void deleteProductDTO(UpdateProductDTO updateProductDTO);
 }
